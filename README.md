@@ -22,8 +22,8 @@ They rank as follows:
    weaken them.
 
 When rules of equal priority conflict, the stricter rule applies. A deviation
-is documented as described in _Changing the guidelines_ > _A deviation names
-scope, reason, risk and migration target_.
+is documented as described in
+[Changing the guidelines](AGENTS.md#a-deviation-names-scope-reason-risk-and-migration-target).
 
 ## Structure
 
@@ -38,18 +38,62 @@ One page per topic:
 Pages are created as they are moved. A page that is not in the index does not
 exist yet.
 
+## Pages and their header
+
+Every page of rules starts with YAML front matter that is checked against
+[`schemas/page.json`](schemas/page.json), the one place that names the allowed
+values:
+
+- `title`: the title of the page.
+- `summary`: one sentence, at most 200 characters.
+- `applies-to`: a non-empty list of fixed values, starting with `all`. A
+  further value, such as a language or a kind of repository, is added to the
+  schema by the pull request that moves the first page needing it.
+- `kind`: `binding` or `informative`.
+
+This `README.md` and `AGENTS.md` are not pages of rules and carry no header.
+
 ## Citing a rule
 
-A rule is cited by the title of its page and its heading, never by a number.
-Numbers change when pages are reordered or split; titles and headings are the
-stable address of a rule.
+Every heading that states a citable rule carries an identifier: an anchor
+element on its own line directly above the heading. Identifiers are lowercase
+words joined by hyphens, speak for themselves and are unique across the
+repository. The wording of a heading may change; its identifier never does.
 
-Write the page title first, then the heading, separated by a greater-than
-sign, for example:
+A rule is cited by its identifier, never by a number or by the wording of its
+heading. Inside the repository the citation is a relative link to the page with
+the identifier as fragment. From outside it is the permanent address
+`https://nebensound.github.io/coding-guidelines/r/<identifier>`, which leads to
+the rule where it stands now, or to what happened to it. The site that answers
+this address does not exist yet, so the address does not resolve yet; the
+address itself is fixed.
 
-> See _Definition of Done_ > _Tests_.
+An identifier that has been on `main` never disappears. When its rule moves or
+is dropped, the identifier is entered in [`identifiers.toml`](identifiers.toml),
+the register of retired identifiers.
 
-Quote the heading as it is written on the page.
+An invented example (no such page exists), with the rule as it is written on its
+page:
+
+```markdown
+<a id="coverage-gate"></a>
+
+## The coverage gate
+
+...
+```
+
+An internal citation of it from another page:
+
+```markdown
+See [the coverage gate](../general/testing.md#coverage-gate).
+```
+
+The permanent address of it:
+
+```text
+https://nebensound.github.io/coding-guidelines/r/coverage-gate
+```
 
 ## Index of pages
 

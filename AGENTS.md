@@ -6,14 +6,33 @@ they are changed. They apply to every change, whoever makes it.
 ## One mechanism, one place
 
 - A mechanism, a term or a requirement is described in exactly one place. Every
-  other page refers to it by the title of its page and its heading, as
-  described in _Nebensound Coding Guidelines_ > _Citing a rule_.
+  other page cites it by its identifier, as described in
+  [Citing a rule](README.md#citing-a-rule).
 - Do not repeat a rule in a second page "for convenience". A copy drifts, and
   then two pages say different things.
 - A page covers one topic. Put a rule on the page of its topic and do not
   create a page for a single rule.
-- When a page or heading is renamed, moved or removed, every citation of it is
-  updated in the same change.
+- When a page is moved or a rule is dropped, every citation of it is updated in
+  the same change.
+
+## An identifier is never renamed or removed
+
+- Every heading that states a citable rule carries an identifier, as described
+  in [Citing a rule](README.md#citing-a-rule). A new rule gets its identifier
+  with its heading.
+- An identifier is never renamed and never removed. The wording of a heading may
+  change.
+- When a rule moves or is dropped, its identifier is entered in
+  `identifiers.toml`, in the form that fits (`moved-to`, or `removed-since` with
+  a `reason`).
+
+## A new page arrives with its header
+
+- A new page starts with the front matter described in
+  [Pages and their header](README.md#pages-and-their-header) and passes
+  `schemas/page.json`.
+- A value of `applies-to` that the schema does not know yet is added to the
+  schema in the same pull request.
 
 ## A new rule names its reason
 
@@ -53,5 +72,5 @@ This repository is public.
 - Markdown follows the repository's Prettier and markdownlint configuration.
   Run both over the changed files before pushing.
 - Commit messages and pull request titles are Conventional Commits.
-- Cite other pages as described in _Nebensound Coding Guidelines_ > _Citing a
-  rule_. Do not link to a heading by its number.
+- Cite other pages as described in [Citing a rule](README.md#citing-a-rule). Do
+  not link to a heading by its number.

@@ -2,6 +2,9 @@
   "config": {
     "default": true,
     "MD013": false,
+    // Inline HTML is allowed only for the anchor element that carries the
+    // identifier of a rule.
+    "MD033": { "allowed_elements": ["a"] },
   },
   "ignores": ["node_modules/**"],
 }
