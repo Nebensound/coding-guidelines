@@ -22,7 +22,8 @@ They rank as follows:
    weaken them.
 
 When rules of equal priority conflict, the stricter rule applies. A deviation
-is documented with its scope, reason, risk and migration target.
+is documented as described in _Changing the guidelines_ > _A deviation names
+scope, reason, risk and migration target_.
 
 ## Structure
 
@@ -48,8 +49,7 @@ sign, for example:
 
 > See _Definition of Done_ > _Tests_.
 
-Quote the heading as it is written on the page. When a heading is renamed, every
-citation of it is updated in the same change.
+Quote the heading as it is written on the page.
 
 ## Index of pages
 

@@ -7,7 +7,7 @@ they are changed. They apply to every change, whoever makes it.
 
 - A mechanism, a term or a requirement is described in exactly one place. Every
   other page refers to it by the title of its page and its heading, as
-  described in the `README.md`.
+  described in _Nebensound Coding Guidelines_ > _Citing a rule_.
 - Do not repeat a rule in a second page "for convenience". A copy drifts, and
   then two pages say different things.
 - A page covers one topic. Put a rule on the page of its topic and do not
@@ -53,5 +53,5 @@ This repository is public.
 - Markdown follows the repository's Prettier and markdownlint configuration.
   Run both over the changed files before pushing.
 - Commit messages and pull request titles are Conventional Commits.
-- Cite other pages as described in the `README.md`. Do not link to a heading by
-  its number.
+- Cite other pages as described in _Nebensound Coding Guidelines_ > _Citing a
+  rule_. Do not link to a heading by its number.
