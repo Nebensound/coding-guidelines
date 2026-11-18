@@ -2,6 +2,8 @@
   "config": {
     "default": true,
     "MD013": false,
+    // The front matter title is data, not a heading; pages keep their own H1.
+    "MD025": { "front_matter_title": "" },
     // Inline HTML is allowed only for the anchor element that carries the
     // identifier of a rule.
     "MD033": { "allowed_elements": ["a"] },

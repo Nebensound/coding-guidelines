@@ -17,20 +17,17 @@ they are changed. They apply to every change, whoever makes it.
 
 ## An identifier is never renamed or removed
 
-- Every heading that states a citable rule carries an identifier, as described
-  in [Citing a rule](README.md#citing-a-rule). A new rule gets its identifier
-  with its heading.
-- An identifier is never renamed and never removed. The wording of a heading may
-  change.
-- When a rule moves or is dropped, its identifier is entered in
-  `identifiers.toml`, in the form that fits (`moved-to`, or `removed-since` with
-  a `reason`).
+- A new rule gets its identifier with its heading. Identifiers follow
+  [Citing a rule](README.md#citing-a-rule): once on `main`, an identifier is
+  never renamed or removed, and a merged or dropped rule is entered in
+  `identifiers.toml`.
 
 ## A new page arrives with its header
 
 - A new page starts with the front matter described in
   [Pages and their header](README.md#pages-and-their-header) and passes
-  `schemas/page.json`.
+  `schemas/page.json`. Until the CI validates headers, the pull request states
+  the validation result there.
 - A value of `applies-to` that the schema does not know yet is added to the
   schema in the same pull request.
 

@@ -8,23 +8,26 @@
   "required": ["title", "summary", "applies-to", "kind"],
   "properties": {
     "title": {
-      "description": "The title of the page.",
-      "type": "string",
-      "minLength": 1
-    },
-    "summary": {
-      "description": "One sentence that says what the page decides.",
+      "description": "The title of the page, on one line.",
       "type": "string",
       "minLength": 1,
-      "maxLength": 200
+      "pattern": "^\\S(?:[^\\n]*\\S)?$"
+    },
+    "summary": {
+      "description": "One sentence on one line that says what the page decides.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^\\S[^\\n]*\\.$"
     },
     "applies-to": {
-      "description": "What the page applies to. Starts with all. A further value is added to the enum by the pull request that moves the first page needing it.",
+      "description": "What the page applies to: all, or one or more specific values. A further value is added to the enum by the pull request that moves the first page needing it.",
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "prefixItems": [{ "const": "all" }],
-      "items": { "enum": ["all"] }
+      "items": { "enum": ["all"] },
+      "if": { "contains": { "const": "all" } },
+      "then": { "maxItems": 1 }
     },
     "kind": {
       "description": "binding: the rules must be followed. informative: the page explains and does not bind.",

@@ -7,14 +7,16 @@
 #
 # An entry is a table named after the retired identifier, in one of two forms.
 #
-# The rule lives on under another identifier:
+# A rule that only moves to another page keeps its identifier and is not
+# entered. An entry is for a rule whose text lives on under another identifier,
+# for example after two rules were merged:
 #
 #   [old-identifier]
 #   moved-to = "new-identifier"
 #
-# The rule was dropped; the version is the release of the guidelines that no
-# longer contains it:
+# The rule was dropped; the value is the date of the merge that dropped it
+# (YYYY-MM-DD):
 #
 #   [dropped-identifier]
-#   removed-since = "1.0.0"
+#   removed-since = 2026-11-19
 #   reason = "Why the rule was dropped."
