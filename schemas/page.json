@@ -1,6 +1,5 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://nebensound.github.io/coding-guidelines/schemas/page.json",
   "title": "Header of a page of rules",
   "description": "The YAML front matter every page of rules starts with. This file is the one place that names the allowed values. The value lists of languages and repositories are empty for now; a value is added by the pull request that adds the first page needing it.",
   "type": "object",

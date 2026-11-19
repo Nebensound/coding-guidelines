@@ -1,7 +1,7 @@
 # Working with the guidelines and changing them
 
-This repository holds the Nebensound Coding Guidelines. It has two parts that
-last: how to work with the guidelines, and how to change them.
+This repository holds the Nebensound Coding Guidelines. This file has two parts
+that last: how to work with the guidelines, and how to change them.
 
 ## Working with the guidelines
 
@@ -53,6 +53,8 @@ The rules below apply to every change, whoever makes it.
   [Pages and their header](README.md#pages-and-their-header), including how a
   new value of `languages` or `repositories` is added and how the header is
   validated.
+- A new page is entered in the [index](README.md#index-of-pages) in the same
+  change, and the row of a moved or removed page changes with it.
 
 ### A new rule names its reason
 
@@ -92,5 +94,3 @@ This repository is public.
 - Markdown follows the repository's Prettier and markdownlint configuration.
   Run both over the changed files before pushing.
 - Commit messages and pull request titles are Conventional Commits.
-- Cite other pages as described in [Citing a rule](README.md#citing-a-rule). Do
-  not link to a heading by its number.

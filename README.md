@@ -50,9 +50,8 @@ values:
   per dimension of scope. Within a field the page applies when one of its
   values fits the case; between fields all must fit. A field that is absent
   means every value of that dimension, so a page without both fields applies
-  everywhere. The schema names the allowed values and starts with empty value
-  lists; a value is added by the pull request that adds the first page needing
-  it.
+  everywhere. The schema names the allowed values; a value is added by the
+  pull request that adds the first page needing it.
 - `kind`: whether the page binds or only explains; the schema names the values
   and what each means.
 
