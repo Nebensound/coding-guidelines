@@ -1,22 +1,25 @@
 # Working with the guidelines and changing them
 
-This repository holds the Nebensound Coding Guidelines. This file has two parts
-that last: how to work with the guidelines, and how to change them.
+This repository holds the Nebensound Coding Guidelines. This file has two
+parts: how to work with the guidelines, and how to change them. The model of the
+content is described in [`README.md`](README.md).
 
 ## Working with the guidelines
 
-### Find the pages that apply
+### Find what applies
 
-- The [index](README.md#index-of-pages) lists every page.
-- A page applies to a case as described in
-  [Pages and their header](README.md#pages-and-their-header): by its
-  `languages` and `repositories` fields. Read every page that applies to the
-  languages and the kind of repository of the case.
+- Read the rules whose `languages` and `repositories` fit the case, as described
+  in [Fields of a rule](README.md#fields-of-a-rule). An absent field fits every
+  value; within a field one value must fit, between fields all must.
+- Only a rule binds, by its `level`. Definitions, principles and the text of
+  reading pages explain and demand nothing.
+- The reading pages in [`pages/`](pages) show the rules in context.
 
 ### Cite a rule
 
-- Cite a rule by its identifier, as described in
-  [Citing a rule](README.md#citing-a-rule).
+- Cite a rule by its identifier and its name, `R0042 (coverage-gate)`; only the
+  number counts. From outside, use the permanent address described in
+  [Identifiers](README.md#identifiers).
 
 ### Name the version
 
@@ -27,70 +30,30 @@ that last: how to work with the guidelines, and how to change them.
 
 The rules below apply to every change, whoever makes it.
 
-### One mechanism, one place
-
-- A mechanism, a term or a requirement is described in exactly one place. Every
-  other page cites it by its identifier, as described in
-  [Citing a rule](README.md#citing-a-rule).
-- Do not repeat a rule in a second page "for convenience". A copy drifts, and
-  then two pages say different things.
-- A page covers one topic. Put a rule on the page of its topic and do not
-  create a page for a single rule.
-- When a page is moved, or a rule is merged into another one or dropped, every
-  citation of it is updated in the same change: to the new place, to the rule it
-  was merged into, or removed together with the text that relied on it.
-
-### An identifier is never renamed or removed
-
-- A new rule gets its identifier with its heading. Identifiers follow
-  [Citing a rule](README.md#citing-a-rule): once on `main`, an identifier is
-  never renamed or removed, and a merged or dropped rule is entered in
-  `identifiers.toml`. A retired identifier is never reused.
-
-### A new page arrives with its header
-
-- A new page starts with the front matter described in
-  [Pages and their header](README.md#pages-and-their-header), including how a
-  new value of `languages` or `repositories` is added and how the header is
-  validated.
-- A new page is entered in the [index](README.md#index-of-pages) in the same
-  change, and the row of a moved or removed page changes with it.
-
-### A new rule names its reason
-
-- Every new or stricter rule states why it exists: the failure it prevents or
-  the property it secures.
-- A rule without a reason is not added. A reason that only says "best
-  practice" is not a reason.
-- Keep rules checkable. If nobody can tell whether a change follows the rule,
-  rewrite it until somebody can.
-
-### A deviation names scope, reason, risk and migration target
-
-A deviation from a rule, in this repository or in a project that follows it, is
-written down with:
-
-- **Scope**: what exactly deviates, and where.
-- **Reason**: the technical or domain reason that makes the rule unworkable.
-- **Risk**: what the deviation costs or endangers.
-- **Migration target**: how and when the deviation ends, or why it cannot.
-
-A deviation that does not name all four is not a deviation but a violation.
-
-### Nothing internal is named
-
-This repository is public.
-
-- Do not name, link or quote private repositories, internal hosts, internal
+- One rule states one requirement. If a sentence holds two requirements that can
+  be followed or violated separately, it is two rules.
+- A rule states its rationale: the failure it prevents or the property it
+  secures. A rationale that only says "best practice" is not one. Keep rules
+  decidable; if two people would not agree whether a change meets it, it is a
+  principle, not a rule.
+- An identifier is never reused or renamed once a tagged version contains it.
+  A retired rule stays as a file with `reason` and, where a rule took its place,
+  `replaced-by`.
+- A new rule gets a place on a reading page in the same change.
+- A pull request that touches an item adds a record of the change under
+  [`changes/`](changes) that says, per item, whether it is `added`, `stricter`,
+  `relaxed`, `editorial` or `retired`, as described in
+  [The record of a change](README.md#the-record-of-a-change).
+- A stricter rule is announced before it binds: by `next`, or by
+  `status: planned`.
+- Front matter validates against the schema of its kind. A value of `languages`
+  or `repositories` is added to the schema by the pull request that brings the
+  first item needing it.
+- Reading pages in `pages/` are never edited by hand; they are generated from
+  `pages-src/`.
+- Nothing internal is named: no private repositories, internal hosts, internal
   services, credentials or customers, in files, commits, pull requests, issues
-  or comments.
-- Describe a need generically. A rule must be understandable and usable by
-  someone outside the organization.
-
-### Language and format
-
-- Everything is English: documents, comments, commit messages, pull requests,
-  issues.
-- Markdown follows the repository's Prettier and markdownlint configuration.
-  Run both over the changed files before pushing.
-- Commit messages and pull request titles are Conventional Commits.
+  or comments. Describe a need generically.
+- Everything is English. Commit messages and pull request titles are
+  Conventional Commits. Markdown follows the repository's Prettier and
+  markdownlint configuration; run both over the changed files before pushing.

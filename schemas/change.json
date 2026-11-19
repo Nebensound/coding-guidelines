@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Record of a change",
+  "description": "One TOML file per pull request under changes/. It lists, per touched item, the identifier and the kind of change.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["changes"],
+  "properties": {
+    "changes": {
+      "description": "An array of tables ([[changes]]), one per touched item.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["item", "kind"],
+        "properties": {
+          "item": {
+            "description": "The identifier of the item.",
+            "type": "string",
+            "pattern": "^[RDPG][0-9]{4,}$"
+          },
+          "kind": {
+            "description": "stricter and retired raise the major version, added and relaxed the minor, editorial the patch.",
+            "enum": ["added", "stricter", "relaxed", "editorial", "retired"]
+          }
+        }
+      }
+    }
+  }
+}

@@ -3,114 +3,195 @@
 The coding and repository guidelines of Nebensound. They are public so that
 public repositories can follow and cite them.
 
-> **Notice:** This repository is still being filled in reviewed pull requests,
-> and the site behind the permanent address of a rule does not exist yet, so
-> that address does not resolve yet.
+> **Notice:** This repository is still being filled. The permanent address of a
+> rule and the generator of the reading pages do not exist yet.
 
-## Scope and priority
+The guidelines are a catalogue of rules, modelled on the rule catalogue of a
+linter, with reading pages for people that embed the rules.
 
-The guidelines are the quality standard for the projects of the `Nebensound`
-GitHub organization. For other projects they are a reference that can be
-followed and cited.
+## Kinds of content
 
-They rank as follows:
+Each item is one Markdown file with typed YAML front matter that is checked
+against a JSON Schema in [`schemas/`](schemas). The kind decides what binds; no
+wording does.
 
-1. Mandatory law and binding security and data protection requirements.
-2. Approved domain specifications and contracts of the specific project.
-3. These guidelines.
-4. Project-specific rules (`AGENTS.md`, `CONTRIBUTING.md`, the project's
-   `README.md`). They may clarify or strengthen the guidelines, never silently
-   weaken them.
+| Kind         | What it is                                                                  | Identifier     | Binds               |
+| ------------ | --------------------------------------------------------------------------- | -------------- | ------------------- |
+| Rule         | exactly one requirement that can be followed or violated                    | `R` and number | yes, by its `level` |
+| Definition   | exactly one term and its meaning                                            | `D` and number | no                  |
+| Principle    | an attitude rules follow from; not decidable for a single change            | `P` and number | no                  |
+| Group        | a named set of rules, for instance a definition of done                     | `G` and number | through its rules   |
+| Reading page | a text for people: headings, order and connecting sentences, rules embedded | its file name  | never               |
 
-When rules of equal priority conflict, the stricter rule applies. A deviation
-is documented as described in
-[Changing the guidelines](AGENTS.md#a-deviation-names-scope-reason-risk-and-migration-target).
+- Only a rule binds. The text of a reading page explains and orders; it demands
+  nothing.
+- Rule or principle: if two people looking at the same change agree whether it
+  is met, it is a rule (checked by review where no program can check it); if
+  they would not, it is a principle.
+- A description of what a mechanism does (a pipeline, a tool) is not content of
+  the guidelines. It lives in the reference of the repository that owns the
+  mechanism.
 
-## Structure
+| Kind       | Folder         | Schema                                       |
+| ---------- | -------------- | -------------------------------------------- |
+| Rule       | `rules/`       | [`rule.json`](schemas/rule.json)             |
+| Definition | `definitions/` | [`definition.json`](schemas/definition.json) |
+| Principle  | `principles/`  | [`principle.json`](schemas/principle.json)   |
+| Group      | `groups/`      | [`group.json`](schemas/group.json)           |
+| Page       | `pages-src/`   | [`page.json`](schemas/page.json)             |
 
-One page per topic:
+## Identifiers
 
-- `general/` holds the rules that apply in every project.
-- `github/` holds the rules about repositories, pull requests, issues, Actions
-  and releases.
-- `languages/` holds the rules per language.
-- `definition-of-done.md` holds the Definition of Done.
+- The identifier is a letter and a running number, for instance `R0042`. It is
+  the file name (`rules/R0042.md`) and says nothing about position or topic.
+- Numbers have four digits and are counted separately per letter (`R0001`,
+  `D0001`). A fifth digit follows after `9999`.
+- An identifier is taken from the first tagged version that contains it. Before
+  that it may still be renumbered or dropped without a trace. Afterwards it is
+  never reused, renamed or removed.
+- Every item also has a speaking `name`: lowercase words joined by hyphens. It
+  may change. A citation reads `R0042 (coverage-gate)`; only the number counts.
+- From outside, a rule is cited by the permanent address
+  `https://nebensound.github.io/coding-guidelines/r/<identifier>`.
 
-## Pages and their header
+## Fields of a rule
 
-Every page of rules starts with YAML front matter that is checked against
-[`schemas/page.json`](schemas/page.json), the one place that names the allowed
-values:
+The statement of the rule is the body of the file. The front matter has:
 
-- `title`: the title of the page, on one line. A page repeats it as its first
-  heading.
-- `summary`: one sentence on one line, ending with a full stop, at most 200
-  characters.
-- `languages` and `repositories`: optional lists of fixed values, one field
-  per dimension of scope. Within a field the page applies when one of its
-  values fits the case; between fields all must fit. A field that is absent
-  means every value of that dimension, so a page without both fields applies
-  everywhere. The schema names the allowed values; a value is added by the
-  pull request that adds the first page needing it.
-- `kind`: whether the page binds or only explains; the schema names the values
-  and what each means.
+- `name`.
+- `level`: `required` (a deviation needs the deviation process: scope, reason,
+  risk and migration target), `recommended` (a deviation needs a reason) or
+  `permitted` (states that something is allowed).
+- `status`: `planned` (published and citable, binds nobody yet), `active` or
+  `retired` (the file stays, with `reason`, and `replaced-by` where a rule took
+  its place). No separate register of retired identifiers exists.
+- `addressee`: `change`, `repository` or `organization`.
+- `languages` and `repositories`: optional lists of fixed values that the schema
+  names. Within a field one value must fit, between fields all must. An absent
+  field means every value. A value is added to the schema by the pull request
+  that brings the first item needing it.
+- `applies-when` and `except`: optional text for a condition and an exception.
+- `existing`: what holds for what was there before the rule: `exempt`,
+  `on-touch` (brought in line when it is touched anyway) or `required`.
+- `enforced-by`: a list whose values are `review` or the name of an automated
+  check as its owner calls it (lowercase words, hyphens, slashes). The schema
+  fixes the form, not the names.
+- `principles`: optional list of the principles the rule follows from.
+- `next`: optional announcement of a change, a table with `from` (the version,
+  `X.Y.Z`) and at least one of `level` and `existing`: what holds from that
+  version on.
 
-The pull request that adds or changes a page shows that the page's front matter
-validates against the schema with a JSON Schema 2020-12 validator.
+The body of a rule starts with the statement as one plain sentence in one
+paragraph, followed by `## Rationale` (required) and `## Examples` (optional).
+Reasons and examples never stand in the statement.
 
-This `README.md` and `AGENTS.md` are not pages of rules and carry no header.
+Definitions and principles have `name` and `status` (and `reason` and
+`replaced-by` when retired), no scope fields and a body of plain text. A group
+has `name`, `status` and `rules`, a list of rule identifiers. An item file has
+no top-level heading and needs no inline HTML.
 
-## Citing a rule
+## Reading pages
 
-Every heading that states a citable rule carries an identifier: an anchor
-element on its own line before the heading, separated from it by one blank
-line. Identifiers are lowercase words joined by hyphens, speak for themselves,
-are unique across the repository and differ from every heading slug on their
-page. The wording of a heading may change; its identifier never does.
+- A page source (`pages-src/<name>.md`) is written by hand: headings,
+  connecting sentences and, at each place where an item stands, a reference to
+  it. Its front matter has `title` and `summary` (one sentence) and nothing
+  else; a page has no scope and no level.
+- An item is referenced on a line of its own by an HTML comment of the form
+  `<!-- item: R0042 -->`.
+- The finished page (`pages/<name>.md`) is written by a generator only, with
+  each referenced item set in at its place. It is committed, so that it reads
+  as continuous text on GitHub, and it names its source at the top.
+- Every active rule stands on at least one page, so a person who reads the pages
+  has read every rule in the wording the files hold.
 
-A rule is cited by its identifier, never by a number or by the wording of its
-heading. Links between `README.md` and `AGENTS.md` point to their section
-headings; these two files hold no citable rules. Inside the repository the
-citation is a relative link to the page with the identifier as fragment. The
-path depends on where the citing page sits; the example below is written from a
-page in one of the topic directories. From outside it is the permanent address
-`https://nebensound.github.io/coding-guidelines/r/<identifier>`, which leads to
-the rule where it stands now, or to what happened to it.
+The folder [`pages/`](pages) is the index of the pages.
 
-An identifier that has been on `main` never disappears. A rule that moves to
-another page keeps its identifier; only the internal links to it change. When a
-rule is merged into another one or dropped, its identifier is entered in
-[`identifiers.toml`](identifiers.toml), the register of retired identifiers. A
-retired identifier is never given to another rule, so an identifier is free only
-if it is in neither a page nor the register.
+## Versions
 
-An illustrative example, with the rule as it is written on its page:
+- The guidelines are versioned like every repository. A version says whether a
+  repository that conformed still conforms.
+- Every pull request that touches a rule says, typed, what it does to it:
+  `added`, `stricter`, `relaxed`, `editorial` or `retired`. `stricter` and
+  `retired` raise the major version, `added` and `relaxed` the minor,
+  `editorial` the patch. A new required rule whose `existing` is `exempt` or
+  `on-touch` counts as `added`. Below `1.0.0` a major change raises the minor
+  version.
+- A stricter rule is announced first (`next`, or `status: planned`) and becomes
+  binding with the major version named.
+- The version in which a rule exists, and the one in which it last changed in
+  substance, is derived from these records and the tags, never written by hand.
+  A rule has no version number of its own.
+
+### The record of a change
+
+One TOML file per pull request lies under [`changes/`](changes), named freely.
+It lists, per touched item, its identifier and the kind of change, as described
+by [`change.json`](schemas/change.json):
+
+```toml
+[[changes]]
+item = "R0042"
+kind = "added"
+```
+
+The files stay. The lists per version are derived from them and the tags.
+
+## A worked example
+
+A rule file, `rules/R0042.md`:
 
 ```markdown
-<a id="coverage-gate"></a>
+---
+name: coverage-gate
+status: active
+level: required
+addressee: change
+existing: on-touch
+enforced-by:
+  - coverage-gate
+---
 
-## The coverage gate
+A change keeps the line coverage of the project at 100 percent.
 
-...
+## Rationale
+
+Uncovered code is code nobody has seen run; the gate finds it before a reader
+has to.
 ```
 
-An internal citation of it from another page:
+A page source, `pages-src/testing.md`, that embeds it:
 
 ```markdown
-See [the coverage gate](../general/testing.md#coverage-gate).
+---
+title: Testing
+summary: How a change is tested and what the tests must cover.
+---
+
+Tests show that a change does what it claims. The rule below says how much of
+the code they must reach.
+
+<!-- item: R0042 -->
 ```
 
-The permanent address of it:
+The resulting page, `pages/testing.md`, written by the generator:
 
-```text
-https://nebensound.github.io/coding-guidelines/r/coverage-gate
+```markdown
+<!-- Generated from pages-src/testing.md. Do not edit. -->
+
+# Testing
+
+Tests show that a change does what it claims. The rule below says how much of
+the code they must reach.
+
+## R0042 (coverage-gate)
+
+A change keeps the line coverage of the project at 100 percent.
+
+### Rationale
+
+Uncovered code is code nobody has seen run; the gate finds it before a reader
+has to.
 ```
-
-## Index of pages
-
-| Page | Topic |
-| ---- | ----- |
-| none | none  |
 
 ## Contributing
 
