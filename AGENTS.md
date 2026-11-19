@@ -1,9 +1,33 @@
-# Changing the guidelines
+# Working with the guidelines and changing them
 
-This repository holds the Nebensound Coding Guidelines. The rules below say how
-they are changed. They apply to every change, whoever makes it.
+This repository holds the Nebensound Coding Guidelines. It has two parts that
+last: how to work with the guidelines, and how to change them.
 
-## One mechanism, one place
+## Working with the guidelines
+
+### Find the pages that apply
+
+- The [index](README.md#index-of-pages) lists every page.
+- A page applies to a case as described in
+  [Pages and their header](README.md#pages-and-their-header): by its
+  `languages` and `repositories` fields. Read every page that applies to the
+  languages and the kind of repository of the case.
+
+### Cite a rule
+
+- Cite a rule by its identifier, as described in
+  [Citing a rule](README.md#citing-a-rule).
+
+### Name the version
+
+- Work that is checked against the guidelines names the version of the
+  guidelines it was checked against.
+
+## Changing the guidelines
+
+The rules below apply to every change, whoever makes it.
+
+### One mechanism, one place
 
 - A mechanism, a term or a requirement is described in exactly one place. Every
   other page cites it by its identifier, as described in
@@ -15,20 +39,21 @@ they are changed. They apply to every change, whoever makes it.
 - When a page is moved or a rule is dropped, every citation of it is updated in
   the same change.
 
-## An identifier is never renamed or removed
+### An identifier is never renamed or removed
 
 - A new rule gets its identifier with its heading. Identifiers follow
   [Citing a rule](README.md#citing-a-rule): once on `main`, an identifier is
   never renamed or removed, and a merged or dropped rule is entered in
   `identifiers.toml`. A retired identifier is never reused.
 
-## A new page arrives with its header
+### A new page arrives with its header
 
 - A new page starts with the front matter described in
   [Pages and their header](README.md#pages-and-their-header), including how a
-  new value of `applies-to` is added and how the header is validated.
+  new value of `languages` or `repositories` is added and how the header is
+  validated.
 
-## A new rule names its reason
+### A new rule names its reason
 
 - Every new or stricter rule states why it exists: the failure it prevents or
   the property it secures.
@@ -37,7 +62,7 @@ they are changed. They apply to every change, whoever makes it.
 - Keep rules checkable. If nobody can tell whether a change follows the rule,
   rewrite it until somebody can.
 
-## A deviation names scope, reason, risk and migration target
+### A deviation names scope, reason, risk and migration target
 
 A deviation from a rule, in this repository or in a project that follows it, is
 written down with:
@@ -49,7 +74,7 @@ written down with:
 
 A deviation that does not name all four is not a deviation but a violation.
 
-## Nothing internal is named
+### Nothing internal is named
 
 This repository is public.
 
@@ -59,7 +84,7 @@ This repository is public.
 - Describe a need generically. A rule must be understandable and usable by
   someone outside the organization.
 
-## Language and format
+### Language and format
 
 - Everything is English: documents, comments, commit messages, pull requests,
   issues.

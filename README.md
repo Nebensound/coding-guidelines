@@ -3,8 +3,9 @@
 The coding and repository guidelines of Nebensound. They are public so that
 public repositories can follow and cite them.
 
-This repository is being filled in several reviewed pull requests. Until a page
-is listed in the [index](#index-of-pages), its rules are not published here.
+> **Notice:** This repository is still being filled in reviewed pull requests,
+> and the site behind the permanent address of a rule does not exist yet, so
+> that address does not resolve yet.
 
 ## Scope and priority
 
@@ -35,9 +36,6 @@ One page per topic:
 - `languages/` holds the rules per language.
 - `definition-of-done.md` holds the Definition of Done.
 
-Pages are added one at a time. A page that is not in the index does not exist
-yet.
-
 ## Pages and their header
 
 Every page of rules starts with YAML front matter that is checked against
@@ -48,9 +46,12 @@ values:
   heading.
 - `summary`: one sentence on one line, ending with a full stop, at most 200
   characters.
-- `applies-to`: a non-empty list of fixed values: `all` alone, or one or more
-  specific values. A further value, such as a language or a kind of repository,
-  is added to the schema by the pull request that adds the first page needing
+- `languages` and `repositories`: optional lists of fixed values, one field
+  per dimension of scope. Within a field the page applies when one of its
+  values fits the case; between fields all must fit. A field that is absent
+  means every value of that dimension, so a page without both fields applies
+  everywhere. The schema names the allowed values and starts with empty value
+  lists; a value is added by the pull request that adds the first page needing
   it.
 - `kind`: `binding` or `informative`.
 
@@ -75,9 +76,7 @@ citation is a relative link to the page with the identifier as fragment. The
 path depends on where the citing page sits; the example below is written from a
 page in one of the topic directories. From outside it is the permanent address
 `https://nebensound.github.io/coding-guidelines/r/<identifier>`, which leads to
-the rule where it stands now, or to what happened to it. The site that answers
-this address does not exist yet, so the address does not resolve yet; the
-address itself is fixed.
+the rule where it stands now, or to what happened to it.
 
 An identifier that has been on `main` never disappears. A rule that moves to
 another page keeps its identifier; only the internal links to it change. When a
@@ -86,7 +85,7 @@ rule is merged into another one or dropped, its identifier is entered in
 retired identifier is never given to another rule, so an identifier is free only
 if it is in neither a page nor the register.
 
-An invented example (no such page exists), with the rule as it is written on its
+An example, with the rule as it is written on its
 page:
 
 ```markdown
@@ -111,9 +110,9 @@ https://nebensound.github.io/coding-guidelines/r/coverage-gate
 
 ## Index of pages
 
-| Page | Topic                       |
-| ---- | --------------------------- |
-| none | No page has been added yet. |
+| Page | Topic |
+| ---- | ----- |
+| none | none  |
 
 ## Contributing
 

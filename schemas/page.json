@@ -2,10 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://nebensound.github.io/coding-guidelines/schemas/page.json",
   "title": "Header of a page of rules",
-  "description": "The YAML front matter every page of rules starts with. This file is the one place that names the allowed values.",
+  "description": "The YAML front matter every page of rules starts with. This file is the one place that names the allowed values. The value lists of languages and repositories are empty for now; a value is added by the pull request that adds the first page needing it.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["title", "summary", "applies-to", "kind"],
+  "required": ["title", "summary", "kind"],
   "properties": {
     "title": {
       "description": "The title of the page, on one line.",
@@ -20,14 +20,19 @@
       "maxLength": 200,
       "pattern": "^\\S[^\\n]*\\.(?![\\s\\S])"
     },
-    "applies-to": {
-      "description": "What the page applies to: all, or one or more specific values. A further value is added to the enum by the pull request that adds the first page needing it.",
+    "languages": {
+      "description": "The languages the page applies to. The page applies when one of the values fits. Absent means every language. No value is allowed yet: items is false until the first value is added as an enum.",
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "items": { "enum": ["all"] },
-      "if": { "contains": { "const": "all" } },
-      "then": { "maxItems": 1 }
+      "items": false
+    },
+    "repositories": {
+      "description": "The kinds of repository the page applies to. The page applies when one of the values fits. Absent means every kind of repository. No value is allowed yet: items is false until the first value is added as an enum.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": false
     },
     "kind": {
       "description": "binding: the rules must be followed. informative: the page explains and does not bind.",

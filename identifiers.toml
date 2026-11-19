@@ -16,9 +16,9 @@
 #   [old-identifier]
 #   moved-to = "new-identifier"
 #
-# The rule was dropped; the value is the date of the merge that dropped it
-# (YYYY-MM-DD):
+# The rule was dropped. The value of last-version is the last version of the
+# guidelines in which the rule stood (X.Y.Z):
 #
 #   [dropped-identifier]
-#   removed-since = 2026-11-19
+#   last-version = "1.2.0"
 #   reason = "Why the rule was dropped."
