@@ -1,7 +1,7 @@
 # Register of retired identifiers.
 #
 # Every heading that states a citable rule carries an identifier that never
-# changes. When the rule moves to another place or is dropped, its identifier
+# changes. When the rule is merged into another one or dropped, its identifier
 # is entered here, so that a citation of it still leads somewhere. A retired
 # identifier is never given to another rule. Active identifiers are not listed;
 # they are found in the pages, so a free identifier appears in neither the pages

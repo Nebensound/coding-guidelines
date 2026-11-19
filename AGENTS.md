@@ -36,8 +36,9 @@ The rules below apply to every change, whoever makes it.
   then two pages say different things.
 - A page covers one topic. Put a rule on the page of its topic and do not
   create a page for a single rule.
-- When a page is moved or a rule is dropped, every citation of it is updated in
-  the same change.
+- When a page is moved, or a rule is merged into another one or dropped, every
+  citation of it is updated in the same change: to the new place, to the rule it
+  was merged into, or removed together with the text that relied on it.
 
 ### An identifier is never renamed or removed
 

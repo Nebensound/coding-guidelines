@@ -53,11 +53,11 @@ values:
   everywhere. The schema names the allowed values and starts with empty value
   lists; a value is added by the pull request that adds the first page needing
   it.
-- `kind`: `binding` or `informative`.
+- `kind`: whether the page binds or only explains; the schema names the values
+  and what each means.
 
-Until the CI validates headers, the pull request that adds or changes a page
-states the result of validating the page's front matter against the schema with
-a JSON Schema 2020-12 validator.
+The pull request that adds or changes a page shows that the page's front matter
+validates against the schema with a JSON Schema 2020-12 validator.
 
 This `README.md` and `AGENTS.md` are not pages of rules and carry no header.
 
@@ -85,8 +85,7 @@ rule is merged into another one or dropped, its identifier is entered in
 retired identifier is never given to another rule, so an identifier is free only
 if it is in neither a page nor the register.
 
-An example, with the rule as it is written on its
-page:
+An illustrative example, with the rule as it is written on its page:
 
 ```markdown
 <a id="coverage-gate"></a>
