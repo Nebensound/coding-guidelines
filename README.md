@@ -35,8 +35,8 @@ One page per topic:
 - `languages/` holds the rules per language.
 - `definition-of-done.md` holds the Definition of Done.
 
-Pages are created as they are moved. A page that is not in the index does not
-exist yet.
+Pages are added one at a time. A page that is not in the index does not exist
+yet.
 
 ## Pages and their header
 
@@ -50,7 +50,7 @@ values:
   characters.
 - `applies-to`: a non-empty list of fixed values: `all` alone, or one or more
   specific values. A further value, such as a language or a kind of repository,
-  is added to the schema by the pull request that moves the first page needing
+  is added to the schema by the pull request that adds the first page needing
   it.
 - `kind`: `binding` or `informative`.
 
@@ -70,9 +70,10 @@ page. The wording of a heading may change; its identifier never does.
 
 A rule is cited by its identifier, never by a number or by the wording of its
 heading. Links between `README.md` and `AGENTS.md` point to their section
-headings; these two files hold no citable rules. Inside the repository the citation is a relative link to the page with
-the identifier as fragment. The path depends on where the citing page sits; the
-example below is written from a page in one of the topic directories. From outside it is the permanent address
+headings; these two files hold no citable rules. Inside the repository the
+citation is a relative link to the page with the identifier as fragment. The
+path depends on where the citing page sits; the example below is written from a
+page in one of the topic directories. From outside it is the permanent address
 `https://nebensound.github.io/coding-guidelines/r/<identifier>`, which leads to
 the rule where it stands now, or to what happened to it. The site that answers
 this address does not exist yet, so the address does not resolve yet; the
@@ -81,7 +82,9 @@ address itself is fixed.
 An identifier that has been on `main` never disappears. A rule that moves to
 another page keeps its identifier; only the internal links to it change. When a
 rule is merged into another one or dropped, its identifier is entered in
-[`identifiers.toml`](identifiers.toml), the register of retired identifiers.
+[`identifiers.toml`](identifiers.toml), the register of retired identifiers. A
+retired identifier is never given to another rule, so an identifier is free only
+if it is in neither a page nor the register.
 
 An invented example (no such page exists), with the rule as it is written on its
 page:
@@ -110,7 +113,7 @@ https://nebensound.github.io/coding-guidelines/r/coverage-gate
 
 | Page | Topic                       |
 | ---- | --------------------------- |
-| none | No page has been moved yet. |
+| none | No page has been added yet. |
 
 ## Contributing
 

@@ -2,8 +2,10 @@
 #
 # Every heading that states a citable rule carries an identifier that never
 # changes. When the rule moves to another place or is dropped, its identifier
-# is entered here, so that a citation of it still leads somewhere. Active
-# identifiers are not listed; they are found in the pages.
+# is entered here, so that a citation of it still leads somewhere. A retired
+# identifier is never given to another rule. Active identifiers are not listed;
+# they are found in the pages, so a free identifier appears in neither the pages
+# nor this register.
 #
 # An entry is a table named after the retired identifier, in one of two forms.
 #

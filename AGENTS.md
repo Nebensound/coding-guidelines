@@ -20,16 +20,13 @@ they are changed. They apply to every change, whoever makes it.
 - A new rule gets its identifier with its heading. Identifiers follow
   [Citing a rule](README.md#citing-a-rule): once on `main`, an identifier is
   never renamed or removed, and a merged or dropped rule is entered in
-  `identifiers.toml`.
+  `identifiers.toml`. A retired identifier is never reused.
 
 ## A new page arrives with its header
 
 - A new page starts with the front matter described in
-  [Pages and their header](README.md#pages-and-their-header) and passes
-  `schemas/page.json`. Until the CI validates headers, the pull request states
-  the validation result there.
-- A value of `applies-to` that the schema does not know yet is added to the
-  schema in the same pull request.
+  [Pages and their header](README.md#pages-and-their-header), including how a
+  new value of `applies-to` is added and how the header is validated.
 
 ## A new rule names its reason
 
