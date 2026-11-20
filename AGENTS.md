@@ -11,6 +11,10 @@ content is described in [`README.md`](README.md).
 - Read the rules whose `languages` and `repositories` fit the case, as described
   in [Fields of a rule](README.md#fields-of-a-rule). An absent field fits every
   value; within a field one value must fit, between fields all must.
+- A rule without `repositories` holds wherever a member of the organization
+  works, someone else's project included. How the named places nest, and what
+  changes in a sandbox or under a personal account, is described in
+  [Where a rule holds](README.md#where-a-rule-holds).
 - Only a rule binds, by its `level`. Definitions, principles and the text of
   reading pages explain and demand nothing.
 - The reading pages in [`pages/`](pages) show the rules in context.

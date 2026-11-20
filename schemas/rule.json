@@ -35,7 +35,7 @@
       "items": false
     },
     "repositories": {
-      "description": "Absent means every kind of repository. Within the field one value must fit; between the fields all must fit.",
+      "description": "A node of the tree everywhere > foreign | own > public | internal > customer. The rule holds from the node it names downwards. Absent means everywhere a member of the organization works, someone else's project included. Within the field one value must fit; between the fields all must fit.",
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
@@ -117,26 +117,54 @@
       "pattern": "^R[0-9]{4,}$"
     }
   },
-  "if": {
-    "properties": {
-      "status": {
-        "const": "retired"
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "retired"
+          }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "reason": true
+        },
+        "required": ["reason"]
+      },
+      "else": {
+        "properties": {
+          "reason": false,
+          "replaced-by": false
+        }
       }
     },
-    "required": ["status"]
-  },
-  "then": {
-    "properties": {
-      "reason": true
-    },
-    "required": ["reason"]
-  },
-  "else": {
-    "properties": {
-      "reason": false,
-      "replaced-by": false
+    {
+      "description": "A rule addressed to the repository or the organization cannot hold in someone else's project, so it names own or a node below it.",
+      "if": {
+        "properties": {
+          "addressee": {
+            "enum": ["repository", "organization"]
+          }
+        },
+        "required": ["addressee"]
+      },
+      "then": {
+        "properties": {
+          "repositories": {
+            "type": "array",
+            "items": {
+              "not": {
+                "const": "foreign"
+              }
+            }
+          }
+        },
+        "required": ["repositories"]
+      }
     }
-  },
+  ],
   "$defs": {
     "name": {
       "description": "A speaking name: lowercase words joined by hyphens. It may change; only the identifier counts.",

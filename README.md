@@ -69,7 +69,8 @@ The statement of the rule is the body of the file. The front matter has:
 - `languages` and `repositories`: optional lists of fixed values that the schema
   names. Within a field one value must fit, between fields all must. An absent
   field means every value. A value is added to the schema by the pull request
-  that brings the first item needing it.
+  that brings the first item needing it. The values of `repositories` are places
+  in a tree, described in [Where a rule holds](#where-a-rule-holds).
 - `applies-when` and `except`: optional text for a condition and an exception.
 - `existing`: what holds for what was there before the rule: `exempt`,
   `on-touch` (brought in line when it is touched anyway) or `required`.
@@ -89,6 +90,43 @@ Definitions and principles have `name` and `status` (and `reason` and
 `replaced-by` when retired), no scope fields and a body of plain text. A group
 has `name`, `status` and `rules`, a list of rule identifiers. An item file has
 no top-level heading and needs no inline HTML.
+
+## Where a rule holds
+
+Rules hold in layers, and the lowest layer binds wherever a member of the
+organization works, also in someone else's project. The field `repositories`
+therefore names a place in a tree:
+
+```text
+everywhere (the field is absent)   whatever a member of the organization works on
+├── foreign                        someone else's project: a fork, a pull request upstream
+└── own                            the organization's own repositories
+    ├── public                     its open source
+    └── internal                   private
+        └── customer               a customer can see it
+```
+
+- A rule names the node from which it holds and holds for everything below it.
+  With several nodes, one must fit. A rule without the field holds everywhere, a
+  fork included.
+- `public`, `internal` and `customer` are what an own repository declares as its
+  audience. `foreign` is declared nowhere: it follows from the project not being
+  the organization's.
+- The `addressee` decides what can hold in someone else's project at all. A rule
+  addressed to the `change` can. A rule addressed to the `repository` or the
+  `organization` cannot, so it names `own` or a node below it, and the schema
+  refuses it without one.
+- A sandbox repository has no place of its own in the tree. It is an own
+  repository and every rule holds for it as for any other, with one difference:
+  a rule that names a node (`own` or below) counts there as `recommended`
+  whatever its `level`. A rule without the field keeps its level everywhere, a
+  sandbox included. Whether a repository is a sandbox is given by the
+  organization's repository property `lifecycle`.
+- A repository under a member's personal account is an own repository, `public`
+  or `internal` by its visibility. Every rule holds for it except the rules
+  addressed to the `organization`.
+- What a repository produces (a library, a service, firmware, a document) is
+  stated as text in `applies-when`.
 
 ## Reading pages
 
