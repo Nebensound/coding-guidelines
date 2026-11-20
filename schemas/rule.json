@@ -130,7 +130,8 @@
       },
       "then": {
         "properties": {
-          "reason": true
+          "reason": true,
+          "next": false
         },
         "required": ["reason"]
       },

@@ -4,18 +4,19 @@ The coding and repository guidelines of Nebensound. They are public so that
 public repositories can follow and cite them.
 
 > **Notice:** This repository is still being filled. The permanent address of a
-> rule and the generator of the reading pages do not exist yet, and the version
-> numbers do not yet read the title types of [Versions](#versions); until they
-> do, the guidelines stay below `0.1.0`.
+> rule, the generator of the reading pages and the tagged versions do not exist
+> yet. Once versions are given out, the guidelines stay below `0.1.0` until the
+> version numbers read the title types of [Versions](#versions).
 
 The guidelines are a catalogue of rules, modelled on the rule catalogue of a
 linter, with reading pages for people that embed the rules.
 
 ## Kinds of content
 
-Each item is one Markdown file with typed YAML front matter that is checked
-against a JSON Schema in [`schemas/`](schemas). The kind decides what binds; no
-wording does.
+Each item (a rule, definition, principle or group) and each page source is one
+Markdown file with typed YAML front matter that is checked against a JSON Schema
+in [`schemas/`](schemas). The kind decides what binds; no wording does. A page
+is not an item: it has no identifier and needs no record of a change.
 
 | Kind         | What it is                                                                  | Identifier     | Binds               |
 | ------------ | --------------------------------------------------------------------------- | -------------- | ------------------- |
@@ -66,7 +67,8 @@ The statement of the rule is the body of the file. The front matter has:
   `permitted` (states that something is allowed).
 - `status`: `planned` (published and citable, binds nobody until a pull request
   makes it `active`), `active` or `retired` (the file stays, with `reason`, and
-  `replaced-by` where a rule took its place). No separate register of retired identifiers exists.
+  `replaced-by` where a rule took its place). No separate register of retired
+  identifiers exists.
 - `addressee`: `change`, `repository` or `organization`.
 - `languages` and `repositories`: optional lists of fixed values that the schema
   names. Within a field one value must fit, between fields all must. An absent
@@ -143,14 +145,17 @@ everywhere (the field is absent)   whatever a member of the organization works o
   else; a page has no scope and no level.
 - An item is referenced on a line of its own by an HTML comment of the form
   `<!-- item: R0042 -->`.
-- The finished page (`pages/<name>.md`) is written by a generator only, with
-  each referenced item set in at its place under a heading of its identifier
-  and name, its own headings one level lower. It is committed, so that it reads
-  as continuous text on GitHub, and it names its source at the top.
+- The finished page (`pages/<name>.md`) is written by a generator only: a first
+  line that names its source, the `title` as top-level heading, and each
+  referenced item set in at its place under a heading of its identifier and
+  name, one level below the heading it stands under, with its own headings one
+  level lower still. It is committed, so that it reads as continuous text on
+  GitHub.
 - Every active rule stands on at least one page, so a person who reads the pages
   has read every rule in the wording the files hold.
 
-The folder [`pages/`](pages) is the index of the pages.
+The folder [`pages/`](pages) is the index of the pages. The `README.md` in each
+folder describes the folder; it is neither an item nor a page.
 
 ## Versions
 
@@ -168,8 +173,9 @@ incompatible.
 | A stricter step is announced: a new rule with `status: planned`, or `next` on a rule   | `announced`        | still meets it                   | minor        |
 | Editorial                                                                              | `editorial`        | unaffected                       | patch        |
 
-- A rule binds what exists when its `existing` is `required`. With `exempt` or
-  `on-touch` it does not.
+- A rule binds what exists when its `level` is `required` or `recommended` and
+  its `existing` is `required`. With `exempt` or `on-touch` it does not, and a
+  `permitted` rule, which cannot be violated, never does.
 - Below `1.0.0`: below `0.1.0` every change raises the patch version; from
   `0.1.0` an incompatible change raises the minor version and every other change
   the patch version. `1.0.0` is a deliberate step.
@@ -187,10 +193,12 @@ incompatible.
   which item, and the title has to fit it: an entry `stricter` needs the
   breaking marker `!` (`rule!`); an entry `added`, `relaxed`, `retired` or
   `announced` needs one of the repository's own types, `rule`, `relax`, `retire`
-  or `announce` respectively; a pull request with only `editorial` entries uses
-  any other type. With several entries, the strongest decides. The own types
-  raise the minor version from `1.0.0` on. The type `feat` is not used: a
-  rulebook has no features.
+  or `announce` respectively; a pull request with only `editorial` entries, or
+  without a record, uses any other type. The marker `!` stands only with a
+  `stricter` entry. With several entries, a `stricter` entry decides; otherwise
+  the type of any one of the minor entries fits, and `editorial` entries do not
+  count. The own types raise the minor version from `1.0.0` on. The type `feat`
+  is not used: a rulebook has no features.
 - The own types are written from the first pull request on. Below `0.1.0` every
   change raises the patch version whatever its type.
 - The version in which a rule exists, and the one in which it last changed in
@@ -209,7 +217,9 @@ item = "R0042"
 kind = "added"
 ```
 
-The files stay. The lists per version are derived from them and the tags.
+The files stay. A pull request that renumbers or drops an identifier before it
+is taken changes or removes the entries that name it. The lists per version are
+derived from the files and the tags.
 
 ## A worked example
 
