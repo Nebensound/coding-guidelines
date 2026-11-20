@@ -46,10 +46,15 @@ The rules below apply to every change, whoever makes it.
 - A new rule gets a place on a reading page in the same change.
 - A pull request that touches an item adds a record of the change under
   [`changes/`](changes) that says, per item, whether it is `added`, `stricter`,
-  `relaxed`, `editorial` or `retired`, as described in
-  [The record of a change](README.md#the-record-of-a-change).
-- A stricter rule is announced before it binds: by `next`, or by
-  `status: planned`.
+  `relaxed`, `retired`, `announced` or `editorial`, as described in
+  [The record of a change](README.md#the-record-of-a-change). Its title fits the
+  record, as described in [Versions](README.md#versions): `!` for a `stricter`
+  entry, `rule`, `relax`, `retire` or `announce` for the others that count like
+  `feat`.
+- An incompatible step (a stricter rule, or a new rule that binds what exists)
+  is announced in an earlier version, by `next` or by `status: planned`, and
+  binds from the major version that switches it on. Relaxing and retiring need
+  no announcement.
 - Front matter validates against the schema of its kind. A value of `languages`
   or `repositories` is added to the schema by the pull request that brings the
   first item needing it.

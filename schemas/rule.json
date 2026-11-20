@@ -17,7 +17,7 @@
       "$ref": "#/$defs/name"
     },
     "status": {
-      "description": "planned: published and citable, binds nobody yet. active: in force. retired: the file stays.",
+      "description": "planned: published and citable, binds nobody until a pull request makes it active. active: in force. retired: the file stays.",
       "enum": ["planned", "active", "retired"]
     },
     "level": {
@@ -75,7 +75,7 @@
       }
     },
     "next": {
-      "description": "Announcement of a change: what holds from a named version on.",
+      "description": "Announcement of a stricter step: what holds from a named version on.",
       "type": "object",
       "additionalProperties": false,
       "required": ["from"],
@@ -95,8 +95,9 @@
       ],
       "properties": {
         "from": {
+          "description": "A version that can carry an incompatible change: X.0.0, or 0.Y.0 below 1.0.0.",
           "type": "string",
-          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?![\\s\\S])"
+          "pattern": "^(?:[1-9][0-9]*\\.0\\.0|0\\.[1-9][0-9]*\\.0)(?![\\s\\S])"
         },
         "level": {
           "enum": ["required", "recommended", "permitted"]

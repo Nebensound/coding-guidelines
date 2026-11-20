@@ -4,7 +4,9 @@ The coding and repository guidelines of Nebensound. They are public so that
 public repositories can follow and cite them.
 
 > **Notice:** This repository is still being filled. The permanent address of a
-> rule and the generator of the reading pages do not exist yet.
+> rule, the generator of the reading pages and the title types of
+> [Versions](#versions) do not exist yet; until they do, a pull request uses
+> `feat` where this README names `rule`, `relax`, `retire` or `announce`.
 
 The guidelines are a catalogue of rules, modelled on the rule catalogue of a
 linter, with reading pages for people that embed the rules.
@@ -62,9 +64,9 @@ The statement of the rule is the body of the file. The front matter has:
 - `level`: `required` (a deviation needs the deviation process: scope, reason,
   risk and migration target), `recommended` (a deviation needs a reason) or
   `permitted` (states that something is allowed).
-- `status`: `planned` (published and citable, binds nobody yet), `active` or
-  `retired` (the file stays, with `reason`, and `replaced-by` where a rule took
-  its place). No separate register of retired identifiers exists.
+- `status`: `planned` (published and citable, binds nobody until a pull request
+  makes it `active`), `active` or `retired` (the file stays, with `reason`, and
+  `replaced-by` where a rule took its place). No separate register of retired identifiers exists.
 - `addressee`: `change`, `repository` or `organization`.
 - `languages` and `repositories`: optional lists of fixed values that the schema
   names. Within a field one value must fit, between fields all must. An absent
@@ -78,9 +80,10 @@ The statement of the rule is the body of the file. The front matter has:
   check as its owner calls it (lowercase words, hyphens, slashes). The schema
   fixes the form, not the names.
 - `principles`: optional list of the principles the rule follows from.
-- `next`: optional announcement of a change, a table with `from` (the version,
-  `X.Y.Z`) and at least one of `level` and `existing`: what holds from that
-  version on.
+- `next`: optional announcement of a stricter step, a table with `from` and at
+  least one of `level` and `existing`: what holds from that version on. `from`
+  names a version that can carry an incompatible change: `X.0.0`, or `0.Y.0`
+  below `1.0.0`.
 
 The body of a rule starts with the statement as one plain sentence in one
 paragraph, followed by `## Rationale` (required) and `## Examples` (optional).
@@ -114,7 +117,8 @@ everywhere (the field is absent)   whatever a member of the organization works o
 - `public`, `internal` and `customer` are what an own repository declares as its
   audience. `foreign` is declared nowhere: it follows from the project being
   someone else's. A fork of someone else's project stays foreign wherever it
-  lives, in the organization or under a member's personal account.
+  lives, in the organization or under a member's personal account; it becomes
+  an own repository when it carries the organization's repository declaration.
 - The `addressee` decides what can hold in someone else's project at all. A rule
   addressed to the `change` can. A rule addressed to the `repository` or the
   `organization` cannot, so it names `own` or a node below it, and the schema
@@ -150,16 +154,41 @@ The folder [`pages/`](pages) is the index of the pages.
 
 ## Versions
 
-- The guidelines are versioned like every repository. A version says whether a
-  repository that conformed still conforms.
-- Every pull request that touches an item says, typed, what it does to it:
-  `added`, `stricter`, `relaxed`, `editorial` or `retired`. `stricter` and
-  `retired` raise the major version, `added` and `relaxed` the minor,
-  `editorial` the patch. A new required rule whose `existing` is `exempt` or
-  `on-touch` counts as `added`. Below `1.0.0` a major change raises the minor
-  version.
-- A stricter rule is announced first (`next`, or `status: planned`) and becomes
-  binding with the major version named.
+The guidelines follow Semantic Versioning, read for a rulebook. A rulebook
+demands; it does not offer. A change is incompatible when a repository that met
+every rule before may no longer meet them after. Taking a demand away is never
+incompatible.
+
+| Change                                                                                 | Kind in the record | A repository that met everything | From `1.0.0` |
+| -------------------------------------------------------------------------------------- | ------------------ | -------------------------------- | ------------ |
+| A rule becomes stricter; a new rule, or a planned one made `active`, binds what exists | `stricter`         | may no longer meet it            | major        |
+| A new rule that does not bind what exists                                              | `added`            | still meets it                   | minor        |
+| A rule is relaxed                                                                      | `relaxed`          | still meets it                   | minor        |
+| A rule is retired                                                                      | `retired`          | still meets it                   | minor        |
+| A stricter step is announced: a new rule with `status: planned`, or `next` on a rule   | `announced`        | still meets it                   | minor        |
+| Editorial                                                                              | `editorial`        | unaffected                       | patch        |
+
+- A rule binds what exists when its `existing` is `required`. With `exempt` or
+  `on-touch` it does not.
+- Below `1.0.0`: below `0.1.0` every change raises the patch version; from
+  `0.1.0` an incompatible change raises the minor version and every other change
+  the patch version. `1.0.0` is a deliberate step.
+- Announcement before obligation: an incompatible step is announced in an
+  earlier version and binds from the major version that switches it on (below
+  `1.0.0`, the version that carries an incompatible change). A rule with
+  `status: planned` binds nobody; it binds from the major version whose pull
+  request makes it `active`, so that pull request records it as `stricter`. The
+  `from` of `next` names the major version of the stricter step. Relaxing and
+  retiring need no announcement.
+- A retired rule keeps its file and its identifier is never given again, so a
+  citation never points at nothing.
+- The version number is given out from the titles of the merged pull requests,
+  which follow Conventional Commits. The record of a change says what happens to
+  which item, and the title has to fit it: an entry `stricter` needs the
+  breaking marker `!`; an entry `added`, `relaxed`, `retired` or `announced`
+  needs a type that counts like `feat`, which is `rule`, `relax`, `retire` or
+  `announce` respectively; a pull request with only `editorial` entries uses
+  any other type. With several entries, the strongest decides.
 - The version in which a rule exists, and the one in which it last changed in
   substance, is derived from these records and the tags, never written by hand.
   A rule has no version number of its own.
