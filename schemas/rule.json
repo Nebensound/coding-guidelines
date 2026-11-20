@@ -35,7 +35,7 @@
       "items": false
     },
     "repositories": {
-      "description": "A node of the tree everywhere > foreign | own > public | internal > customer. The rule holds from the node it names downwards. Absent means everywhere a member of the organization works, someone else's project included. Within the field one value must fit; between the fields all must fit.",
+      "description": "A node of the tree: foreign and own below everywhere, public and internal below own, customer below internal. The rule holds from the node it names downwards. Absent means everywhere a member of the organization works, someone else's project included. Within the field one value must fit; between the fields all must fit.",
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
@@ -71,7 +71,7 @@
       "uniqueItems": true,
       "items": {
         "type": "string",
-        "pattern": "^P[0-9]{4,}$"
+        "pattern": "^P(?:[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3,})$"
       }
     },
     "next": {
@@ -114,7 +114,7 @@
     "replaced-by": {
       "description": "The rule that took the place of a retired rule.",
       "type": "string",
-      "pattern": "^R[0-9]{4,}$"
+      "pattern": "^R(?:[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3,})$"
     }
   },
   "allOf": [

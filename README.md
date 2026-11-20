@@ -100,7 +100,7 @@ therefore names a place in a tree:
 ```text
 everywhere (the field is absent)   whatever a member of the organization works on
 ├── foreign                        someone else's project: a fork, a pull request upstream
-└── own                            the organization's own repositories
+└── own                            the organization's repositories and those under a member's personal account
     ├── public                     its open source
     └── internal                   private
         └── customer               a customer can see it
@@ -110,8 +110,8 @@ everywhere (the field is absent)   whatever a member of the organization works o
   With several nodes, one must fit. A rule without the field holds everywhere, a
   fork included.
 - `public`, `internal` and `customer` are what an own repository declares as its
-  audience. `foreign` is declared nowhere: it follows from the project not being
-  the organization's.
+  audience. `foreign` is declared nowhere: it follows from the project being
+  neither the organization's nor under a member's personal account.
 - The `addressee` decides what can hold in someone else's project at all. A rule
   addressed to the `change` can. A rule addressed to the `repository` or the
   `organization` cannot, so it names `own` or a node below it, and the schema
@@ -148,7 +148,7 @@ The folder [`pages/`](pages) is the index of the pages.
 
 - The guidelines are versioned like every repository. A version says whether a
   repository that conformed still conforms.
-- Every pull request that touches a rule says, typed, what it does to it:
+- Every pull request that touches an item says, typed, what it does to it:
   `added`, `stricter`, `relaxed`, `editorial` or `retired`. `stricter` and
   `retired` raise the major version, `added` and `relaxed` the minor,
   `editorial` the patch. A new required rule whose `existing` is `exempt` or
@@ -189,7 +189,7 @@ enforced-by:
   - coverage-gate
 ---
 
-A change keeps the line coverage of the project at 100 percent.
+A change covers every line of code it adds or changes with a test.
 
 ## Rationale
 
@@ -223,7 +223,7 @@ the code they must reach.
 
 ## R0042 (coverage-gate)
 
-A change keeps the line coverage of the project at 100 percent.
+A change covers every line of code it adds or changes with a test.
 
 ### Rationale
 
