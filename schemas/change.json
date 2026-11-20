@@ -21,7 +21,7 @@
             "pattern": "^[RDPG](?:[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3,})(?![\\s\\S])"
           },
           "kind": {
-            "description": "stricter is incompatible and raises the major version (the title needs the breaking marker !). added, relaxed, retired and announced raise the minor version (a title type that counts like feat). editorial raises the patch version.",
+            "description": "stricter is incompatible and raises the major version (the title needs the breaking marker !). added, relaxed, retired and announced raise the minor version (the title type rule, relax, retire or announce respectively; feat is not used). editorial raises the patch version.",
             "enum": [
               "added",
               "stricter",

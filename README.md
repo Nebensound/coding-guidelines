@@ -4,9 +4,9 @@ The coding and repository guidelines of Nebensound. They are public so that
 public repositories can follow and cite them.
 
 > **Notice:** This repository is still being filled. The permanent address of a
-> rule, the generator of the reading pages and the title types of
-> [Versions](#versions) do not exist yet; until they do, a pull request uses
-> `feat` where this README names `rule`, `relax`, `retire` or `announce`.
+> rule and the generator of the reading pages do not exist yet, and the version
+> numbers do not yet read the title types of [Versions](#versions); until they
+> do, the guidelines stay below `0.1.0`.
 
 The guidelines are a catalogue of rules, modelled on the rule catalogue of a
 linter, with reading pages for people that embed the rules.
@@ -185,10 +185,14 @@ incompatible.
 - The version number is given out from the titles of the merged pull requests,
   which follow Conventional Commits. The record of a change says what happens to
   which item, and the title has to fit it: an entry `stricter` needs the
-  breaking marker `!`; an entry `added`, `relaxed`, `retired` or `announced`
-  needs a type that counts like `feat`, which is `rule`, `relax`, `retire` or
-  `announce` respectively; a pull request with only `editorial` entries uses
-  any other type. With several entries, the strongest decides.
+  breaking marker `!` (`rule!`); an entry `added`, `relaxed`, `retired` or
+  `announced` needs one of the repository's own types, `rule`, `relax`, `retire`
+  or `announce` respectively; a pull request with only `editorial` entries uses
+  any other type. With several entries, the strongest decides. The own types
+  raise the minor version from `1.0.0` on. The type `feat` is not used: a
+  rulebook has no features.
+- The own types are written from the first pull request on. Below `0.1.0` every
+  change raises the patch version whatever its type.
 - The version in which a rule exists, and the one in which it last changed in
   substance, is derived from these records and the tags, never written by hand.
   A rule has no version number of its own.
