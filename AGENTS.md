@@ -40,9 +40,9 @@ The rules below apply to every change, whoever makes it.
   secures. A rationale that only says "best practice" is not one. Keep rules
   decidable; if two people would not agree whether a change meets it, it is a
   principle, not a rule.
-- An identifier is never reused or renamed once a tagged version contains it.
-  A retired rule stays as a file with `reason` and, where a rule took its place,
-  `replaced-by`.
+- An identifier is never reused, renamed or removed once a tagged version
+  contains it. A retired item stays as a file with `reason` and, where an item
+  of the same kind took its place, `replaced-by`.
 - A new rule gets a place on a reading page in the same change.
 - A pull request that touches an item adds a record of the change under
   [`changes/`](changes) that says, per item, whether it is `added`, `stricter`,

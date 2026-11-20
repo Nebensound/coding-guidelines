@@ -88,8 +88,10 @@ Reasons and examples never stand in the statement.
 
 Definitions and principles have `name` and `status` (and `reason` and
 `replaced-by` when retired), no scope fields and a body of plain text. A group
-has `name`, `status` and `rules`, a list of rule identifiers. An item file has
-no top-level heading and needs no inline HTML.
+has `name`, `status` and `rules`, a list of rule identifiers, and the same
+`reason` and `replaced-by` when retired. An item file has no top-level heading;
+the generator writes the heading where it sets the item into a page. An item
+file needs no inline HTML.
 
 ## Where a rule holds
 
@@ -100,7 +102,7 @@ therefore names a place in a tree:
 ```text
 everywhere (the field is absent)   whatever a member of the organization works on
 ├── foreign                        someone else's project: a fork, a pull request upstream
-└── own                            the organization's repositories and those under a member's personal account
+└── own                            the organization's repositories and a member's own repositories under a personal account
     ├── public                     its open source
     └── internal                   private
         └── customer               a customer can see it
@@ -111,7 +113,8 @@ everywhere (the field is absent)   whatever a member of the organization works o
   fork included.
 - `public`, `internal` and `customer` are what an own repository declares as its
   audience. `foreign` is declared nowhere: it follows from the project being
-  neither the organization's nor under a member's personal account.
+  someone else's. A fork of someone else's project stays foreign wherever it
+  lives, in the organization or under a member's personal account.
 - The `addressee` decides what can hold in someone else's project at all. A rule
   addressed to the `change` can. A rule addressed to the `repository` or the
   `organization` cannot, so it names `own` or a node below it, and the schema
@@ -122,9 +125,9 @@ everywhere (the field is absent)   whatever a member of the organization works o
   whatever its `level`. A rule without the field keeps its level everywhere, a
   sandbox included. Whether a repository is a sandbox is given by the
   organization's repository property `lifecycle`.
-- A repository under a member's personal account is an own repository, `public`
-  or `internal` by its visibility. Every rule holds for it except the rules
-  addressed to the `organization`.
+- A member's own repository under a personal account is an own repository,
+  `public` or `internal` by its visibility. Every rule holds for it except the
+  rules addressed to the `organization`.
 - What a repository produces (a library, a service, firmware, a document) is
   stated as text in `applies-when`.
 
@@ -137,7 +140,8 @@ everywhere (the field is absent)   whatever a member of the organization works o
 - An item is referenced on a line of its own by an HTML comment of the form
   `<!-- item: R0042 -->`.
 - The finished page (`pages/<name>.md`) is written by a generator only, with
-  each referenced item set in at its place. It is committed, so that it reads
+  each referenced item set in at its place under a heading of its identifier
+  and name, its own headings one level lower. It is committed, so that it reads
   as continuous text on GitHub, and it names its source at the top.
 - Every active rule stands on at least one page, so a person who reads the pages
   has read every rule in the wording the files hold.
