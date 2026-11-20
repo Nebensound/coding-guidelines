@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Front matter of a page source",
+  "description": "The YAML front matter of a page source (pages-src/<name>.md). A page has no scope and no level.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title", "summary"],
+  "properties": {
+    "title": {
+      "description": "The title of the page, on one line.",
+      "type": "string",
+      "pattern": "^\\S(?:[^\\n]*\\S)?(?![\\s\\S])"
+    },
+    "summary": {
+      "description": "One sentence on one line that says what the page is about.",
+      "type": "string",
+      "maxLength": 200,
+      "pattern": "^\\S[^\\n]*\\.(?![\\s\\S])"
+    }
+  }
+}

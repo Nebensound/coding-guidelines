@@ -1,0 +1,6 @@
+# Declarative repository configuration for Nebensound's central automation.
+#
+# This repository does not call the central pipeline yet, so it declares none.
+
+[repo]
+pipeline = "none"
