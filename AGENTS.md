@@ -21,7 +21,7 @@ content is described in [`README.md`](README.md).
 
 ### Cite a rule
 
-- Cite a rule by its identifier and its name, `R042 (coverage-gate)`; only the
+- Cite a rule by its identifier and its name, `R0042 (coverage-gate)`; only the
   number counts. From outside, use the permanent address described in
   [Identifiers](README.md#identifiers).
 

@@ -64,19 +64,19 @@ binds; no wording does. A page is not an item: it has no identifier.
 
 ## Identifiers
 
-- The identifier is a letter and a running number, for instance `R042`. It is
-  the file name without its ending (`rules/R042.yaml`) and says nothing about
+- The identifier is a letter and a running number, for instance `R0042`. It is
+  the file name without its ending (`rules/R0042.yaml`) and says nothing about
   position or topic.
-- Numbers have three digits and are counted separately per letter (`R001`,
-  `D001`). A fourth digit follows after `999`.
+- Numbers have four digits and are counted separately per letter (`R0001`,
+  `D0001`). A fifth digit follows after `9999`.
 - An identifier is taken from the first tagged version that contains it. Before
   that it may still be renumbered or dropped without a trace. Afterwards it is
   never reused, renamed or removed.
 - Every item also has a speaking `name`: lowercase words joined by hyphens. It
-  may change. A citation reads `R042 (coverage-gate)`; only the number counts.
+  may change. A citation reads `R0042 (coverage-gate)`; only the number counts.
 - From outside, a rule is cited by the permanent address
   `https://nebensound.github.io/coding-guidelines/r/<identifier>`, for instance
-  `https://nebensound.github.io/coding-guidelines/r/R042`. Neither a citation
+  `https://nebensound.github.io/coding-guidelines/r/R0042`. Neither a citation
   nor the address carries the ending of the file.
 
 ## Fields of a rule
@@ -179,7 +179,7 @@ everywhere (the field is absent)   whatever a member of the organization works o
   front matter has `title` and `summary` (one sentence) and nothing else; a page
   has no scope and no level.
 - An item is referenced on a line of its own by an HTML comment of the form
-  `<!-- item: R042 -->`.
+  `<!-- item: R0042 -->`.
 - The finished page (`pages/<name>.md`) is written by a generator only: a first
   line that names its source, the `title` as top-level heading, and each
   referenced item set in at its place under a heading of its identifier and
@@ -363,7 +363,7 @@ depends on such a branch.
 
 ## A worked example
 
-A rule file, `rules/R042.yaml`:
+A rule file, `rules/R0042.yaml`:
 
 ```yaml
 name: coverage-gate
@@ -390,7 +390,7 @@ summary: How a change is tested and what the tests must cover.
 Tests show that a change does what it claims. The rule below says how much of
 the code they must reach.
 
-<!-- item: R042 -->
+<!-- item: R0042 -->
 ```
 
 The resulting page, `pages/testing.md`, written by the generator:
@@ -403,7 +403,7 @@ The resulting page, `pages/testing.md`, written by the generator:
 Tests show that a change does what it claims. The rule below says how much of
 the code they must reach.
 
-## R042 (coverage-gate)
+## R0042 (coverage-gate)
 
 A change covers every line of code it adds or changes with a test.
 

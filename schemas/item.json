@@ -47,24 +47,24 @@
   },
   "$defs": {
     "rule-id": {
-      "description": "The identifier of a rule: R and three digits from 001, a fourth digit only after 999.",
+      "description": "The identifier of a rule: R and four digits from 0001, a fifth digit only after 9999.",
       "type": "string",
-      "pattern": "^R(?:[0-9]{2}[1-9]|[0-9][1-9][0-9]|[1-9][0-9]{2,})(?![\\s\\S])"
+      "pattern": "^R(?:[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3,})(?![\\s\\S])"
     },
     "definition-id": {
-      "description": "The identifier of a definition: D and three digits from 001, a fourth digit only after 999.",
+      "description": "The identifier of a definition: D and four digits from 0001, a fifth digit only after 9999.",
       "type": "string",
-      "pattern": "^D(?:[0-9]{2}[1-9]|[0-9][1-9][0-9]|[1-9][0-9]{2,})(?![\\s\\S])"
+      "pattern": "^D(?:[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3,})(?![\\s\\S])"
     },
     "principle-id": {
-      "description": "The identifier of a principle: P and three digits from 001, a fourth digit only after 999.",
+      "description": "The identifier of a principle: P and four digits from 0001, a fifth digit only after 9999.",
       "type": "string",
-      "pattern": "^P(?:[0-9]{2}[1-9]|[0-9][1-9][0-9]|[1-9][0-9]{2,})(?![\\s\\S])"
+      "pattern": "^P(?:[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3,})(?![\\s\\S])"
     },
     "group-id": {
-      "description": "The identifier of a group: G and three digits from 001, a fourth digit only after 999.",
+      "description": "The identifier of a group: G and four digits from 0001, a fifth digit only after 9999.",
       "type": "string",
-      "pattern": "^G(?:[0-9]{2}[1-9]|[0-9][1-9][0-9]|[1-9][0-9]{2,})(?![\\s\\S])"
+      "pattern": "^G(?:[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3,})(?![\\s\\S])"
     }
   }
 }
