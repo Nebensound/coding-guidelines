@@ -1,17 +1,16 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nebensound.github.io/coding-guidelines/schemas/group.json",
   "title": "A group",
-  "description": "A group of rules (groups/G<number>.yaml). The identifier is the file name without its ending. A group has no scope fields.",
+  "description": "A group of rules (groups/G<number>.yaml). The identifier is the file name without its ending. The fields every item shares come from item.json; a group has no scope fields.",
   "type": "object",
-  "additionalProperties": false,
-  "required": ["name", "status", "rules"],
+  "allOf": [
+    {
+      "$ref": "item.json"
+    }
+  ],
+  "required": ["rules"],
   "properties": {
-    "name": {
-      "$ref": "item.json#/$defs/name"
-    },
-    "status": {
-      "$ref": "item.json#/$defs/status"
-    },
     "rules": {
       "description": "The identifiers of the rules of the group.",
       "type": "array",
@@ -26,17 +25,9 @@
       "type": "string",
       "minLength": 1
     },
-    "reason": {
-      "$ref": "item.json#/$defs/reason"
-    },
     "replaced-by": {
-      "description": "The group that took the place of a retired group.",
       "$ref": "item.json#/$defs/group-id"
     }
   },
-  "allOf": [
-    {
-      "$ref": "item.json#/$defs/retired"
-    }
-  ]
+  "unevaluatedProperties": false
 }

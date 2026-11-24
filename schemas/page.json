@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nebensound.github.io/coding-guidelines/schemas/page.json",
   "title": "Front matter of a page source",
   "description": "The YAML front matter of a page source (pages-src/<name>.md). A page has no scope and no level.",
   "type": "object",

@@ -1,13 +1,56 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nebensound.github.io/coding-guidelines/schemas/rule.json",
   "title": "A rule",
-  "description": "A rule (rules/R<number>.yaml). The identifier is the file name without its ending. The value lists of languages and repositories are empty for now: items is false until the pull request that brings the first item needing a value adds it as an enum.",
+  "description": "A rule (rules/R<number>.yaml). The identifier is the file name without its ending. The fields every item shares come from item.json. The value lists of languages and repositories are empty for now: items is false until the pull request that brings the first item needing a value adds it as an enum.",
   "type": "object",
-  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "item.json"
+    },
+    {
+      "description": "A retired rule announces nothing.",
+      "if": {
+        "properties": {
+          "status": {
+            "const": "retired"
+          }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "next": false
+        }
+      }
+    },
+    {
+      "description": "A rule addressed to the repository or the organization cannot hold in someone else's project, so it names own or a node below it.",
+      "if": {
+        "properties": {
+          "addressee": {
+            "enum": ["repository", "organization"]
+          }
+        },
+        "required": ["addressee"]
+      },
+      "then": {
+        "properties": {
+          "repositories": {
+            "type": "array",
+            "items": {
+              "not": {
+                "const": "foreign"
+              }
+            }
+          }
+        },
+        "required": ["repositories"]
+      }
+    }
+  ],
   "required": [
-    "name",
     "statement",
-    "status",
     "level",
     "addressee",
     "existing",
@@ -15,16 +58,10 @@
     "rationale"
   ],
   "properties": {
-    "name": {
-      "$ref": "item.json#/$defs/name"
-    },
     "statement": {
       "description": "The rule as one plain sentence on one line. Reasons and examples never stand in it.",
       "type": "string",
       "pattern": "^\\S[^\\n]*\\.(?![\\s\\S])"
-    },
-    "status": {
-      "$ref": "item.json#/$defs/status"
     },
     "level": {
       "$ref": "#/$defs/level"
@@ -121,59 +158,11 @@
       "type": "string",
       "minLength": 1
     },
-    "reason": {
-      "$ref": "item.json#/$defs/reason"
-    },
     "replaced-by": {
-      "description": "The rule that took the place of a retired rule.",
       "$ref": "item.json#/$defs/rule-id"
     }
   },
-  "allOf": [
-    {
-      "$ref": "item.json#/$defs/retired"
-    },
-    {
-      "description": "A retired rule announces nothing.",
-      "if": {
-        "properties": {
-          "status": {
-            "const": "retired"
-          }
-        },
-        "required": ["status"]
-      },
-      "then": {
-        "properties": {
-          "next": false
-        }
-      }
-    },
-    {
-      "description": "A rule addressed to the repository or the organization cannot hold in someone else's project, so it names own or a node below it.",
-      "if": {
-        "properties": {
-          "addressee": {
-            "enum": ["repository", "organization"]
-          }
-        },
-        "required": ["addressee"]
-      },
-      "then": {
-        "properties": {
-          "repositories": {
-            "type": "array",
-            "items": {
-              "not": {
-                "const": "foreign"
-              }
-            }
-          }
-        },
-        "required": ["repositories"]
-      }
-    }
-  ],
+  "unevaluatedProperties": false,
   "$defs": {
     "level": {
       "description": "required: a deviation needs the deviation process. recommended: a deviation needs a reason. permitted: states that something is allowed.",

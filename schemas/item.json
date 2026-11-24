@@ -1,8 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Shared parts of an item",
-  "description": "The fields every kind of item shares, the condition on a retired item and the patterns of the identifiers. The schemas of the kinds reference these definitions; this file describes no item file by itself.",
-  "$defs": {
+  "$id": "https://nebensound.github.io/coding-guidelines/schemas/item.json",
+  "title": "An item",
+  "description": "What every kind of item shares: name, status, reason and replaced-by, the condition on a retired item, and the patterns of the identifiers. The schema of each kind references this file and adds only what is its own; no item file is checked against this file alone.",
+  "type": "object",
+  "required": ["name", "status"],
+  "properties": {
     "name": {
       "description": "A speaking name: lowercase words joined by hyphens. It may change; only the identifier counts.",
       "type": "string",
@@ -17,30 +20,32 @@
       "type": "string",
       "minLength": 1
     },
-    "retired": {
-      "description": "A retired item names its reason. reason and replaced-by stand only on a retired item.",
-      "type": "object",
-      "if": {
-        "properties": {
-          "status": {
-            "const": "retired"
-          }
-        },
-        "required": ["status"]
-      },
-      "then": {
-        "properties": {
-          "reason": true
-        },
-        "required": ["reason"]
-      },
-      "else": {
-        "properties": {
-          "reason": false,
-          "replaced-by": false
-        }
+    "replaced-by": {
+      "description": "The item of the same kind that took the place of a retired item. The schema of the kind fixes its pattern.",
+      "type": "string"
+    }
+  },
+  "if": {
+    "properties": {
+      "status": {
+        "const": "retired"
       }
     },
+    "required": ["status"]
+  },
+  "then": {
+    "properties": {
+      "reason": true
+    },
+    "required": ["reason"]
+  },
+  "else": {
+    "properties": {
+      "reason": false,
+      "replaced-by": false
+    }
+  },
+  "$defs": {
     "rule-id": {
       "description": "The identifier of a rule: R and three digits from 001, a fourth digit only after 999.",
       "type": "string",
