@@ -74,7 +74,9 @@ The rules below apply to every change, whoever makes it.
 - An item is one YAML file, `<folder>/<identifier>.yaml`, and validates against
   the schema of its kind; the front matter of a page source validates against
   `page.json`. An editor with the YAML language server checks item files while
-  writing, through the mapping in `.vscode/settings.json`. A value of
+  writing, through the mapping in `.vscode/settings.json`; the extension behind
+  it is recommended in `.vscode/extensions.json`. A field every kind shares is
+  changed in `item.json`, not in the schema of a kind. A value of
   `languages` or `repositories` is added to the schema by the pull request that
   brings the first item needing it.
 - Reading pages in `pages/` are never edited by hand; they are generated from

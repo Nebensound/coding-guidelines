@@ -49,11 +49,17 @@ binds; no wording does. A page is not an item: it has no identifier.
 - The fields every item shares (`name`, `status`, `reason`, `replaced-by`), the
   condition that a retired item names its `reason`, and the patterns of the
   identifiers stand once, in [`item.json`](schemas/item.json). The schemas of
-  the kinds reference it and hold only what is theirs.
+  the kinds reference it and hold only what is theirs; a field that neither
+  defines is refused.
+- Each schema names itself by an `$id` under
+  `https://nebensound.github.io/coding-guidelines/schemas/`. A reference from
+  one schema to another is resolved to the file beside it in `schemas/`.
 - The repository maps each item folder to its schema for the YAML language
   server (the one behind the usual YAML extension of VS Code) in
-  [`.vscode/settings.json`](.vscode/settings.json), so an editor marks a wrong
-  or missing field while writing.
+  [`.vscode/settings.json`](.vscode/settings.json), and recommends that
+  extension in [`.vscode/extensions.json`](.vscode/extensions.json). An editor
+  with it marks a wrong, missing or unknown field while writing. No item file
+  carries a line that names its schema.
 - No item has a field that names its kind; the folder and the identifier say it.
 
 ## Identifiers
