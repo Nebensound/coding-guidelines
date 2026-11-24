@@ -44,15 +44,25 @@ The rules below apply to every change, whoever makes it.
   contains it. A retired item stays as a file with `reason` and, where an item
   of the same kind took its place, `replaced-by`.
 - A new rule gets a place on a reading page in the same change.
-- A pull request that touches an item adds a record of the change under
-  [`changes/`](changes) that says, per item, whether it is `added`, `stricter`,
-  `relaxed`, `retired`, `announced` or `editorial`, as described in
-  [The record of a change](README.md#the-record-of-a-change). Its title fits the
-  record, as described in [Versions](README.md#versions): `rule!` for a
-  `stricter` entry; `rule`, `relax`, `retire` or `announce` for an `added`,
-  `relaxed`, `retired` or `announced` one; any other type for `editorial` only
-  or for a pull request without a record. The marker `!` stands only with a
-  `stricter` entry. The type `feat` is not used.
+- What a change does to an item (`stricter`, `added`, `relaxed`, `retired`,
+  `announced` or `editorial`) follows from the fields of the item, as described
+  in [What a change does to an item](README.md#what-a-change-does-to-an-item).
+  For the statement of a rule, `applies-when`, `except` and the body of a
+  definition or a principle, the type of the title claims it, and review judges
+  the claim.
+- The type of the title names the kind, as described in
+  [The title of a pull request](README.md#the-title-of-a-pull-request): `rule!`
+  for `stricter`; `rule`, `relax`, `retire` or `announce` for `added`,
+  `relaxed`, `retired` or `announced`; any other type for `editorial`. The title
+  is at least as strict as what the fields show. The marker `!` stands only in
+  `rule!`. The type `feat` is not used.
+- A pull request changes items in one way, as described in
+  [One kind per pull request](README.md#one-kind-per-pull-request).
+- Once branches named `pre` in front of `main` exist, the recommended way is one
+  pull request per change against `pre`, landed in `main` together, as described
+  in
+  [Through a branch in front of `main`](README.md#through-a-branch-in-front-of-main).
+  Until then every pull request goes to `main`.
 - An incompatible step (a stricter rule, or a new rule that binds what exists)
   is announced in an earlier version, by `next` or by `status: planned`, and
   binds from the major version that switches it on. Relaxing and retiring need

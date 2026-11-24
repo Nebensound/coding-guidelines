@@ -4,9 +4,10 @@ The coding and repository guidelines of Nebensound. They are public so that
 public repositories can follow and cite them.
 
 > **Notice:** This repository is still being filled. The permanent address of a
-> rule, the generator of the reading pages and the tagged versions do not exist
-> yet. Once versions are given out, the guidelines stay below `0.1.0` until the
-> version numbers read the title types of [Versions](#versions).
+> rule, the generator of the reading pages and its checks, and the tagged
+> versions do not exist yet. Once versions are given out, the guidelines stay
+> below `0.1.0` until the version numbers read the types of
+> [The title of a pull request](#the-title-of-a-pull-request).
 
 The guidelines are a catalogue of rules, modelled on the rule catalogue of a
 linter, with reading pages for people that embed the rules.
@@ -16,7 +17,7 @@ linter, with reading pages for people that embed the rules.
 Each item (a rule, definition, principle or group) and each page source is one
 Markdown file with typed YAML front matter that is checked against a JSON Schema
 in [`schemas/`](schemas). The kind decides what binds; no wording does. A page
-is not an item: it has no identifier and needs no record of a change.
+is not an item: it has no identifier.
 
 | Kind         | What it is                                                                  | Identifier     | Binds               |
 | ------------ | --------------------------------------------------------------------------- | -------------- | ------------------- |
@@ -164,14 +165,14 @@ demands; it does not offer. A change is incompatible when a repository that met
 every rule before may no longer meet them after. Taking a demand away is never
 incompatible.
 
-| Change                                                                                 | Kind in the record | A repository that met everything | From `1.0.0` |
-| -------------------------------------------------------------------------------------- | ------------------ | -------------------------------- | ------------ |
-| A rule becomes stricter; a new rule, or a planned one made `active`, binds what exists | `stricter`         | may no longer meet it            | major        |
-| A new rule that does not bind what exists                                              | `added`            | still meets it                   | minor        |
-| A rule is relaxed                                                                      | `relaxed`          | still meets it                   | minor        |
-| A rule is retired                                                                      | `retired`          | still meets it                   | minor        |
-| A stricter step is announced: a new rule with `status: planned`, or `next` on a rule   | `announced`        | still meets it                   | minor        |
-| Editorial                                                                              | `editorial`        | unaffected                       | patch        |
+| Change                                                                                 | Kind        | A repository that met everything | From `1.0.0` |
+| -------------------------------------------------------------------------------------- | ----------- | -------------------------------- | ------------ |
+| A rule becomes stricter; a new rule, or a planned one made `active`, binds what exists | `stricter`  | may no longer meet it            | major        |
+| A new rule that does not bind what exists                                              | `added`     | still meets it                   | minor        |
+| A rule is relaxed                                                                      | `relaxed`   | still meets it                   | minor        |
+| A rule is retired                                                                      | `retired`   | still meets it                   | minor        |
+| A stricter step is announced: a new rule with `status: planned`, or `next` on a rule   | `announced` | still meets it                   | minor        |
+| Editorial                                                                              | `editorial` | unaffected                       | patch        |
 
 - A rule binds what exists when its `level` is `required` or `recommended` and
   its `existing` is `required`. With `exempt` or `on-touch` it does not, and a
@@ -182,44 +183,133 @@ incompatible.
 - Announcement before obligation: an incompatible step is announced in an
   earlier version and binds from the major version that switches it on (below
   `1.0.0`, the version that carries an incompatible change). A rule with
-  `status: planned` binds nobody; it binds from the major version whose pull
-  request makes it `active`, so that pull request records it as `stricter`. The
-  `from` of `next` names the major version of the stricter step. Relaxing and
-  retiring need no announcement.
+  `status: planned` binds nobody until a pull request makes it `active`. When it
+  binds what exists, that pull request is `stricter` and the rule binds from the
+  major version it brings; otherwise it is `added`. The `from` of `next` names
+  the major version of the stricter step. Relaxing and retiring need no
+  announcement.
 - A retired rule keeps its file and its identifier is never given again, so a
   citation never points at nothing.
-- The version number is given out from the titles of the merged pull requests,
-  which follow Conventional Commits. The record of a change says what happens to
-  which item, and the title has to fit it: an entry `stricter` needs the
-  breaking marker `!` (`rule!`); an entry `added`, `relaxed`, `retired` or
-  `announced` needs one of the repository's own types, `rule`, `relax`, `retire`
-  or `announce` respectively; a pull request with only `editorial` entries, or
-  without a record, uses any other type. The marker `!` stands only with a
-  `stricter` entry. With several entries, a `stricter` entry decides; otherwise
-  the type of any one of the minor entries fits, and `editorial` entries do not
-  count. The own types raise the minor version from `1.0.0` on. The type `feat`
-  is not used: a rulebook has no features.
+
+### What a change does to an item
+
+What a pull request does to an item follows from two things: the fields of the
+item, compared before and after the pull request, and the title of the pull
+request for the free text that carries meaning.
+
+For a rule:
+
+| What changes in the file of a rule                                                                           | Kind                                             |
+| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------ |
+| A new rule, `active`, that binds what exists                                                                 | `stricter`                                       |
+| A new rule, `active`, that does not bind what exists                                                         | `added`                                          |
+| A new rule with `status: planned`                                                                            | `announced`                                      |
+| `status` to `active`, from `planned` or from `retired`                                                       | `stricter` if it binds what exists, else `added` |
+| `status` to `retired`                                                                                        | `retired`                                        |
+| `status` from `active` back to `planned`                                                                     | `relaxed`                                        |
+| `status` from `retired` back to `planned`                                                                    | `announced`                                      |
+| `level` or `existing` raised                                                                                 | `stricter`                                       |
+| `level` or `existing` lowered                                                                                | `relaxed`                                        |
+| `addressee` changed                                                                                          | `stricter`                                       |
+| `languages` or `repositories` widened: a value added, a node replaced by one above it, or the field removed  | `stricter`                                       |
+| `languages` or `repositories` narrowed: a value removed, a node replaced by one below it, or the field added | `relaxed`                                        |
+| `next` added, or changed to announce more or from an earlier version                                         | `announced`                                      |
+| `next` changed to announce less or from a later version, or removed without its step being taken             | `relaxed`                                        |
+| The statement, `applies-when` or `except`                                                                    | the kind the title claims                        |
+| The rationale, the examples, `name`, `enforced-by`, `principles`, `reason` or `replaced-by`                  | `editorial`                                      |
+
+For a definition, a principle and a group, which bind nothing by themselves:
+
+| What changes in the file of a definition, principle or group                            | Kind                      |
+| --------------------------------------------------------------------------------------- | ------------------------- |
+| A new item                                                                              | `added`                   |
+| `status` to `retired`                                                                   | `retired`                 |
+| Any other change of `status`; `name`, `reason` or `replaced-by`; the `rules` of a group | `editorial`               |
+| The body of a definition or a principle                                                 | the kind the title claims |
+
+- `level` rises from `permitted` to `recommended` to `required`; `existing`
+  rises from `exempt` to `on-touch` to `required`.
+- A change of `languages` or `repositories` that widens in one place and narrows
+  in another, such as `public` replaced by `internal`, counts as widened.
+- A rule with `status: planned` binds nobody, so a change of its fields other
+  than `status` that the table reads as `stricter` or `added` is `announced`. A
+  rule with `status: retired` binds nobody, so a change of its fields other than
+  `status` is `editorial`.
+- `next` is removed without its step being taken when the same pull request
+  does not raise `level` or `existing` to what `next` announced. When it does,
+  the raise counts.
+- When several rows apply to one file and one of them is `stricter`, the item
+  is `stricter`. Otherwise it counts with each kind its rows show, and with
+  `editorial` only when no other kind applies.
+- A file is never moved or removed once its identifier is taken. Before that, a
+  renumbered item counts as a new item, and a dropped item has no kind, because
+  no version contained it.
+- A page source binds nothing; a change of it is `editorial`.
+
+### The title of a pull request
+
+The version number is given out from the titles of the merged pull requests,
+which follow Conventional Commits. The type of the title names the kind of the
+change:
+
+| Type of the title | Kind        |
+| ----------------- | ----------- |
+| `rule!`           | `stricter`  |
+| `rule`            | `added`     |
+| `relax`           | `relaxed`   |
+| `retire`          | `retired`   |
+| `announce`        | `announced` |
+| any other type    | `editorial` |
+
+- The breaking marker `!` stands only in `rule!`. The type `feat` is not used:
+  a rulebook has no features.
+- `rule`, `relax`, `retire` and `announce` are the repository's own types. They
+  raise the minor version from `1.0.0` on.
 - The own types are written from the first pull request on. Below `0.1.0` every
   change raises the patch version whatever its type.
-- The version in which a rule exists, and the one in which it last changed in
-  substance, is derived from these records and the tags, never written by hand.
-  A rule has no version number of its own.
+- For free text that carries meaning (the statement of a rule, `applies-when`,
+  `except`, the body of a definition or a principle), no program can read
+  whether new wording demands more or only reads better. The type of the title
+  is the author's claim about it, and review judges the claim.
+- The check of this repository holds the title at least as strict as what the
+  fields of the changed items show. `rule!` is the strictest, then the other own
+  types, then any other type. A raised `level` under a title without `!` fails.
+- A change of free text that carries meaning under an editorial title passes,
+  and the check names the item for the reviewer. A corrected typo in a statement
+  stays possible, and a hidden stricter step is seen.
 
-### The record of a change
+### One kind per pull request
 
-One TOML file per pull request lies under [`changes/`](changes), named freely.
-It lists, per touched item, its identifier and the kind of change, as described
-by [`change.json`](schemas/change.json):
+A pull request changes items in one way. A pull request that rewords the
+statements of two rules, one to demand more and one only to read better, can
+carry only one title, so both would stand in the list of the version as
+`stricter`. Two pull requests keep the list true. Changes that the fields show
+are not affected; they are read per item.
 
-```toml
-[[changes]]
-item = "R0042"
-kind = "added"
-```
+### Derived data
 
-The files stay. A pull request that renumbers or drops an identifier before it
-is taken changes or removes the entries that name it. The lists per version are
-derived from the files and the tags.
+Since which version an item exists, in which version it last changed in
+substance, and the list of changes per version by kind are read from the history
+of `main` and the tags, never written by hand. Each touched item counts with the
+kind its fields show. Where only its free text that carries meaning changed, it
+counts with the kind the title claims. Where both changed, the kind with the
+larger version step counts, and the kind the fields show when the steps are
+equal. A rule has no version number of its own.
+
+### Through a branch in front of `main`
+
+Once the central pipeline offers branches named `pre` in front of `main`, this
+way is recommended:
+
+1. One pull request per change against `pre`. Automatic merging is acceptable
+   there; `pre` binds nobody.
+2. One pull request from `pre` into `main` that lands the changes together as
+   one deliberate version of the rulebook. The landing keeps the single commits
+   and their titles, so the list of the version still names the kind per item.
+   The review of the landing is where the claims about free text are judged.
+
+Until then every pull request goes to `main`. Nothing in this repository
+depends on such a branch.
 
 ## A worked example
 
