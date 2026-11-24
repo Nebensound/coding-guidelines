@@ -46,15 +46,15 @@ is not an item: it has no identifier.
 
 ## Identifiers
 
-- The identifier is a letter and a running number, for instance `R0042`. It is
-  the file name (`rules/R0042.md`) and says nothing about position or topic.
-- Numbers have four digits and are counted separately per letter (`R0001`,
-  `D0001`). A fifth digit follows after `9999`.
+- The identifier is a letter and a running number, for instance `R042`. It is
+  the file name (`rules/R042.md`) and says nothing about position or topic.
+- Numbers have three digits and are counted separately per letter (`R001`,
+  `D001`). A fourth digit follows after `999`.
 - An identifier is taken from the first tagged version that contains it. Before
   that it may still be renumbered or dropped without a trace. Afterwards it is
   never reused, renamed or removed.
 - Every item also has a speaking `name`: lowercase words joined by hyphens. It
-  may change. A citation reads `R0042 (coverage-gate)`; only the number counts.
+  may change. A citation reads `R042 (coverage-gate)`; only the number counts.
 - From outside, a rule is cited by the permanent address
   `https://nebensound.github.io/coding-guidelines/r/<identifier>`.
 
@@ -84,9 +84,13 @@ The statement of the rule is the body of the file. The front matter has:
   fixes the form, not the names.
 - `principles`: optional list of the principles the rule follows from.
 - `next`: optional announcement of a stricter step, a table with `from` and at
-  least one of `level` and `existing`: what holds from that version on. `from`
-  names a version that can carry an incompatible change: `X.0.0`, or `0.Y.0`
-  below `1.0.0`.
+  least one of `level` and `existing`: what is to hold from that version on.
+  `from` names a version that can carry an incompatible change: `X.0.0`, or
+  `0.Y.0` below `1.0.0`. `next` does not take effect by itself: a pull request
+  takes the step by raising `level` or `existing` to what `next` announced and
+  removing `next`. The check of this repository fails while a `from` does not
+  lie above the current version, so a step that falls due is taken or its
+  `next` is changed.
 
 The body of a rule starts with the statement as one plain sentence in one
 paragraph, followed by `## Rationale` (required) and `## Examples` (optional).
@@ -145,7 +149,7 @@ everywhere (the field is absent)   whatever a member of the organization works o
   it. Its front matter has `title` and `summary` (one sentence) and nothing
   else; a page has no scope and no level.
 - An item is referenced on a line of its own by an HTML comment of the form
-  `<!-- item: R0042 -->`.
+  `<!-- item: R042 -->`.
 - The finished page (`pages/<name>.md`) is written by a generator only: a first
   line that names its source, the `title` as top-level heading, and each
   referenced item set in at its place under a heading of its identifier and
@@ -171,7 +175,7 @@ incompatible.
 | A new rule that does not bind what exists                                              | `added`     | still meets it                   | minor        |
 | A rule is relaxed                                                                      | `relaxed`   | still meets it                   | minor        |
 | A rule is retired                                                                      | `retired`   | still meets it                   | minor        |
-| A stricter step is announced: a new rule with `status: planned`, or `next` on a rule   | `announced` | still meets it                   | minor        |
+| A stricter step is announced: a new rule with `status: planned`, or `next` on a rule   | `announced` | still meets it                   | patch        |
 | Editorial                                                                              | `editorial` | unaffected                       | patch        |
 
 - A rule binds what exists when its `level` is `required` or `recommended` and
@@ -180,14 +184,17 @@ incompatible.
 - Below `1.0.0`: below `0.1.0` every change raises the patch version; from
   `0.1.0` an incompatible change raises the minor version and every other change
   the patch version. `1.0.0` is a deliberate step.
-- Announcement before obligation: an incompatible step is announced in an
-  earlier version and binds from the major version that switches it on (below
-  `1.0.0`, the version that carries an incompatible change). A rule with
-  `status: planned` binds nobody until a pull request makes it `active`. When it
-  binds what exists, that pull request is `stricter` and the rule binds from the
-  major version it brings; otherwise it is `added`. The `from` of `next` names
-  the major version of the stricter step. Relaxing and retiring need no
+- Announcement before obligation, from `1.0.0` on: an incompatible step is
+  announced in an earlier version and binds from the major version that switches
+  it on. A rule with `status: planned` binds nobody until a pull request makes
+  it `active`. When it binds what exists, that pull request is `stricter` and
+  the rule binds from the major version it brings; otherwise it is `added`. The
+  `from` of `next` names the major version of the stricter step, and the pull
+  request that takes the step is `stricter`. An announcement asks nothing of
+  anyone yet, so it raises only the patch version. Relaxing and retiring need no
   announcement.
+- Below `1.0.0` no announcement is needed: an incompatible step binds from the
+  version that carries it.
 - A retired rule keeps its file and its identifier is never given again, so a
   citation never points at nothing.
 
@@ -263,8 +270,9 @@ change:
 
 - The breaking marker `!` stands only in `rule!`. The type `feat` is not used:
   a rulebook has no features.
-- `rule`, `relax`, `retire` and `announce` are the repository's own types. They
-  raise the minor version from `1.0.0` on.
+- `rule`, `relax`, `retire` and `announce` are the repository's own types.
+  `rule`, `relax` and `retire` raise the minor version from `1.0.0` on;
+  `announce` raises the patch version.
 - The own types are written from the first pull request on. Below `0.1.0` every
   change raises the patch version whatever its type.
 - For free text that carries meaning (the statement of a rule, `applies-when`,
@@ -313,7 +321,7 @@ depends on such a branch.
 
 ## A worked example
 
-A rule file, `rules/R0042.md`:
+A rule file, `rules/R042.md`:
 
 ```markdown
 ---
@@ -345,7 +353,7 @@ summary: How a change is tested and what the tests must cover.
 Tests show that a change does what it claims. The rule below says how much of
 the code they must reach.
 
-<!-- item: R0042 -->
+<!-- item: R042 -->
 ```
 
 The resulting page, `pages/testing.md`, written by the generator:
@@ -358,7 +366,7 @@ The resulting page, `pages/testing.md`, written by the generator:
 Tests show that a change does what it claims. The rule below says how much of
 the code they must reach.
 
-## R0042 (coverage-gate)
+## R042 (coverage-gate)
 
 A change covers every line of code it adds or changes with a test.
 

@@ -21,7 +21,7 @@ content is described in [`README.md`](README.md).
 
 ### Cite a rule
 
-- Cite a rule by its identifier and its name, `R0042 (coverage-gate)`; only the
+- Cite a rule by its identifier and its name, `R042 (coverage-gate)`; only the
   number counts. From outside, use the permanent address described in
   [Identifiers](README.md#identifiers).
 
@@ -63,10 +63,14 @@ The rules below apply to every change, whoever makes it.
   in
   [Through a branch in front of `main`](README.md#through-a-branch-in-front-of-main).
   Until then every pull request goes to `main`.
-- An incompatible step (a stricter rule, or a new rule that binds what exists)
-  is announced in an earlier version, by `next` or by `status: planned`, and
-  binds from the major version that switches it on. Relaxing and retiring need
-  no announcement.
+- From `1.0.0` on, an incompatible step (a stricter rule, or a new rule that
+  binds what exists) is announced in an earlier version, by `next` or by
+  `status: planned`, and binds from the major version that switches it on.
+  Below `1.0.0` no announcement is needed. Relaxing and retiring need no
+  announcement.
+- `next` does not take effect by itself. The pull request that takes the step
+  raises `level` or `existing` to what `next` announced and removes `next`. A
+  `from` that does not lie above the current version fails the check.
 - Front matter validates against the schema of its kind. A value of `languages`
   or `repositories` is added to the schema by the pull request that brings the
   first item needing it.

@@ -71,11 +71,11 @@
       "uniqueItems": true,
       "items": {
         "type": "string",
-        "pattern": "^P(?:[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3,})(?![\\s\\S])"
+        "pattern": "^P(?:[0-9]{2}[1-9]|[0-9][1-9][0-9]|[1-9][0-9]{2,})(?![\\s\\S])"
       }
     },
     "next": {
-      "description": "Announcement of a stricter step: what holds from a named version on.",
+      "description": "Announcement of a stricter step: what is to hold from a named version on. It does not take effect by itself: a pull request takes the step by raising level or existing and removing next.",
       "type": "object",
       "additionalProperties": false,
       "required": ["from"],
@@ -115,7 +115,7 @@
     "replaced-by": {
       "description": "The rule that took the place of a retired rule.",
       "type": "string",
-      "pattern": "^R(?:[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3,})(?![\\s\\S])"
+      "pattern": "^R(?:[0-9]{2}[1-9]|[0-9][1-9][0-9]|[1-9][0-9]{2,})(?![\\s\\S])"
     }
   },
   "allOf": [
