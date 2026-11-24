@@ -2,9 +2,6 @@
   "config": {
     "default": true,
     "MD013": false,
-    // Item files have no top-level heading; the generator writes the headings
-    // where it sets an item into a page.
-    "MD041": false,
     // No inline HTML is needed anywhere. HTML comments, which carry the
     // references in page sources, are not elements and stay allowed.
     "MD033": true,

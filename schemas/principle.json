@@ -1,49 +1,33 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Front matter of a principle",
-  "description": "The YAML front matter of a principle (principles/P<number>.md). The identifier is the file name. A principle has no scope fields.",
+  "title": "A principle",
+  "description": "A principle (principles/P<number>.yaml). The identifier is the file name without its ending. A principle has no scope fields.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["name", "status"],
+  "required": ["name", "status", "text"],
   "properties": {
     "name": {
-      "description": "A speaking name: lowercase words joined by hyphens. It may change; only the identifier counts.",
-      "type": "string",
-      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*(?![\\s\\S])"
+      "$ref": "item.json#/$defs/name"
     },
     "status": {
-      "description": "planned: published and citable, not yet in use. active: in use. retired: the file stays.",
-      "enum": ["planned", "active", "retired"]
+      "$ref": "item.json#/$defs/status"
     },
-    "reason": {
-      "description": "Why the principle was retired.",
+    "text": {
+      "description": "The attitude the principle states, as Markdown text without headings.",
       "type": "string",
       "minLength": 1
     },
+    "reason": {
+      "$ref": "item.json#/$defs/reason"
+    },
     "replaced-by": {
       "description": "The principle that took the place of a retired principle.",
-      "type": "string",
-      "pattern": "^P(?:[0-9]{2}[1-9]|[0-9][1-9][0-9]|[1-9][0-9]{2,})(?![\\s\\S])"
+      "$ref": "item.json#/$defs/principle-id"
     }
   },
-  "if": {
-    "properties": {
-      "status": {
-        "const": "retired"
-      }
-    },
-    "required": ["status"]
-  },
-  "then": {
-    "properties": {
-      "reason": true
-    },
-    "required": ["reason"]
-  },
-  "else": {
-    "properties": {
-      "reason": false,
-      "replaced-by": false
+  "allOf": [
+    {
+      "$ref": "item.json#/$defs/retired"
     }
-  }
+  ]
 }

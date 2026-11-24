@@ -1,28 +1,33 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Front matter of a rule",
-  "description": "The YAML front matter of a rule (rules/R<number>.md). The identifier is the file name. The value lists of languages and repositories are empty for now: items is false until the pull request that brings the first item needing a value adds it as an enum.",
+  "title": "A rule",
+  "description": "A rule (rules/R<number>.yaml). The identifier is the file name without its ending. The value lists of languages and repositories are empty for now: items is false until the pull request that brings the first item needing a value adds it as an enum.",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "name",
+    "statement",
     "status",
     "level",
     "addressee",
     "existing",
-    "enforced-by"
+    "enforced-by",
+    "rationale"
   ],
   "properties": {
     "name": {
-      "$ref": "#/$defs/name"
+      "$ref": "item.json#/$defs/name"
+    },
+    "statement": {
+      "description": "The rule as one plain sentence on one line. Reasons and examples never stand in it.",
+      "type": "string",
+      "pattern": "^\\S[^\\n]*\\.(?![\\s\\S])"
     },
     "status": {
-      "description": "planned: published and citable, binds nobody until a pull request makes it active. active: in force. retired: the file stays.",
-      "enum": ["planned", "active", "retired"]
+      "$ref": "item.json#/$defs/status"
     },
     "level": {
-      "description": "required: a deviation needs the deviation process. recommended: a deviation needs a reason. permitted: states that something is allowed.",
-      "enum": ["required", "recommended", "permitted"]
+      "$ref": "#/$defs/level"
     },
     "addressee": {
       "enum": ["change", "repository", "organization"]
@@ -70,8 +75,7 @@
       "minItems": 1,
       "uniqueItems": true,
       "items": {
-        "type": "string",
-        "pattern": "^P(?:[0-9]{2}[1-9]|[0-9][1-9][0-9]|[1-9][0-9]{2,})(?![\\s\\S])"
+        "$ref": "item.json#/$defs/principle-id"
       }
     },
     "next": {
@@ -100,26 +104,37 @@
           "pattern": "^(?:[1-9][0-9]*\\.0\\.0|0\\.[1-9][0-9]*\\.0)(?![\\s\\S])"
         },
         "level": {
-          "enum": ["required", "recommended", "permitted"]
+          "$ref": "#/$defs/level"
         },
         "existing": {
           "$ref": "#/$defs/existing"
         }
       }
     },
-    "reason": {
-      "description": "Why the rule was retired.",
+    "rationale": {
+      "description": "The failure the rule prevents or the property it secures, as Markdown text without headings.",
       "type": "string",
       "minLength": 1
     },
+    "examples": {
+      "description": "Examples of meeting and violating the rule, as Markdown text without headings; code blocks included.",
+      "type": "string",
+      "minLength": 1
+    },
+    "reason": {
+      "$ref": "item.json#/$defs/reason"
+    },
     "replaced-by": {
       "description": "The rule that took the place of a retired rule.",
-      "type": "string",
-      "pattern": "^R(?:[0-9]{2}[1-9]|[0-9][1-9][0-9]|[1-9][0-9]{2,})(?![\\s\\S])"
+      "$ref": "item.json#/$defs/rule-id"
     }
   },
   "allOf": [
     {
+      "$ref": "item.json#/$defs/retired"
+    },
+    {
+      "description": "A retired rule announces nothing.",
       "if": {
         "properties": {
           "status": {
@@ -130,15 +145,7 @@
       },
       "then": {
         "properties": {
-          "reason": true,
           "next": false
-        },
-        "required": ["reason"]
-      },
-      "else": {
-        "properties": {
-          "reason": false,
-          "replaced-by": false
         }
       }
     },
@@ -168,10 +175,9 @@
     }
   ],
   "$defs": {
-    "name": {
-      "description": "A speaking name: lowercase words joined by hyphens. It may change; only the identifier counts.",
-      "type": "string",
-      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*(?![\\s\\S])"
+    "level": {
+      "description": "required: a deviation needs the deviation process. recommended: a deviation needs a reason. permitted: states that something is allowed.",
+      "enum": ["required", "recommended", "permitted"]
     },
     "existing": {
       "description": "What holds for what was there before the rule. exempt: nothing. on-touch: brought in line when touched anyway. required: brought in line.",

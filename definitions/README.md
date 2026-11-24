@@ -1,3 +1,3 @@
 # Definitions
 
-One Markdown file per definition, named after its identifier (`D001.md`).
+One YAML file per definition, named after its identifier (`D001.yaml`).

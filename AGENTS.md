@@ -36,10 +36,10 @@ The rules below apply to every change, whoever makes it.
 
 - One rule states one requirement. If a sentence holds two requirements that can
   be followed or violated separately, it is two rules.
-- A rule states its rationale: the failure it prevents or the property it
-  secures. A rationale that only says "best practice" is not one. Keep rules
-  decidable; if two people would not agree whether a change meets it, it is a
-  principle, not a rule.
+- A rule states its rationale in `rationale`: the failure it prevents or the
+  property it secures. A rationale that only says "best practice" is not one.
+  Keep rules decidable; if two people would not agree whether a change meets
+  it, it is a principle, not a rule.
 - An identifier is never reused, renamed or removed once a tagged version
   contains it. A retired item stays as a file with `reason` and, where an item
   of the same kind took its place, `replaced-by`.
@@ -47,7 +47,7 @@ The rules below apply to every change, whoever makes it.
 - What a change does to an item (`stricter`, `added`, `relaxed`, `retired`,
   `announced` or `editorial`) follows from the fields of the item, as described
   in [What a change does to an item](README.md#what-a-change-does-to-an-item).
-  For the statement of a rule, `applies-when`, `except` and the body of a
+  For the `statement` of a rule, `applies-when`, `except` and the `text` of a
   definition or a principle, the type of the title claims it, and review judges
   the claim.
 - The type of the title names the kind, as described in
@@ -71,14 +71,18 @@ The rules below apply to every change, whoever makes it.
 - `next` does not take effect by itself. The pull request that takes the step
   raises `level` or `existing` to what `next` announced and removes `next`. A
   `from` that does not lie above the current version fails the check.
-- Front matter validates against the schema of its kind. A value of `languages`
-  or `repositories` is added to the schema by the pull request that brings the
-  first item needing it.
+- An item is one YAML file, `<folder>/<identifier>.yaml`, and validates against
+  the schema of its kind; the front matter of a page source validates against
+  `page.json`. An editor with the YAML language server checks item files while
+  writing, through the mapping in `.vscode/settings.json`. A value of
+  `languages` or `repositories` is added to the schema by the pull request that
+  brings the first item needing it.
 - Reading pages in `pages/` are never edited by hand; they are generated from
   `pages-src/`.
 - Nothing internal is named: no private repositories, internal hosts, internal
   services, credentials or customers, in files, commits, pull requests, issues
   or comments. Describe a need generically.
 - Everything is English. Commit messages and pull request titles are
-  Conventional Commits. Markdown follows the repository's Prettier and
-  markdownlint configuration; run both over the changed files before pushing.
+  Conventional Commits. Files follow the repository's Prettier configuration and
+  Markdown its markdownlint configuration; run both over the changed files
+  before pushing.

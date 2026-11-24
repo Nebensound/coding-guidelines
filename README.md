@@ -14,10 +14,12 @@ linter, with reading pages for people that embed the rules.
 
 ## Kinds of content
 
-Each item (a rule, definition, principle or group) and each page source is one
-Markdown file with typed YAML front matter that is checked against a JSON Schema
-in [`schemas/`](schemas). The kind decides what binds; no wording does. A page
-is not an item: it has no identifier.
+Each item (a rule, definition, principle or group) is one YAML file that holds
+all of it and is checked against a JSON Schema in [`schemas/`](schemas). No
+Markdown file stands beside it: text that needs Markdown, code blocks included,
+is a block of text in a field. A page source is a Markdown file with typed YAML
+front matter, checked against its schema the same way. The kind decides what
+binds; no wording does. A page is not an item: it has no identifier.
 
 | Kind         | What it is                                                                  | Identifier     | Binds               |
 | ------------ | --------------------------------------------------------------------------- | -------------- | ------------------- |
@@ -36,18 +38,29 @@ is not an item: it has no identifier.
   the guidelines. It lives in the reference of the repository that owns the
   mechanism.
 
-| Kind       | Folder         | Schema                                       |
-| ---------- | -------------- | -------------------------------------------- |
-| Rule       | `rules/`       | [`rule.json`](schemas/rule.json)             |
-| Definition | `definitions/` | [`definition.json`](schemas/definition.json) |
-| Principle  | `principles/`  | [`principle.json`](schemas/principle.json)   |
-| Group      | `groups/`      | [`group.json`](schemas/group.json)           |
-| Page       | `pages-src/`   | [`page.json`](schemas/page.json)             |
+| Kind       | File                         | Schema                                       |
+| ---------- | ---------------------------- | -------------------------------------------- |
+| Rule       | `rules/R<number>.yaml`       | [`rule.json`](schemas/rule.json)             |
+| Definition | `definitions/D<number>.yaml` | [`definition.json`](schemas/definition.json) |
+| Principle  | `principles/P<number>.yaml`  | [`principle.json`](schemas/principle.json)   |
+| Group      | `groups/G<number>.yaml`      | [`group.json`](schemas/group.json)           |
+| Page       | `pages-src/<name>.md`        | [`page.json`](schemas/page.json)             |
+
+- The fields every item shares (`name`, `status`, `reason`, `replaced-by`), the
+  condition that a retired item names its `reason`, and the patterns of the
+  identifiers stand once, in [`item.json`](schemas/item.json). The schemas of
+  the kinds reference it and hold only what is theirs.
+- The repository maps each item folder to its schema for the YAML language
+  server (the one behind the usual YAML extension of VS Code) in
+  [`.vscode/settings.json`](.vscode/settings.json), so an editor marks a wrong
+  or missing field while writing.
+- No item has a field that names its kind; the folder and the identifier say it.
 
 ## Identifiers
 
 - The identifier is a letter and a running number, for instance `R042`. It is
-  the file name (`rules/R042.md`) and says nothing about position or topic.
+  the file name without its ending (`rules/R042.yaml`) and says nothing about
+  position or topic.
 - Numbers have three digits and are counted separately per letter (`R001`,
   `D001`). A fourth digit follows after `999`.
 - An identifier is taken from the first tagged version that contains it. Before
@@ -56,13 +69,17 @@ is not an item: it has no identifier.
 - Every item also has a speaking `name`: lowercase words joined by hyphens. It
   may change. A citation reads `R042 (coverage-gate)`; only the number counts.
 - From outside, a rule is cited by the permanent address
-  `https://nebensound.github.io/coding-guidelines/r/<identifier>`.
+  `https://nebensound.github.io/coding-guidelines/r/<identifier>`, for instance
+  `https://nebensound.github.io/coding-guidelines/r/R042`. Neither a citation
+  nor the address carries the ending of the file.
 
 ## Fields of a rule
 
-The statement of the rule is the body of the file. The front matter has:
+The file of a rule has these fields:
 
 - `name`.
+- `statement`: the rule as one plain sentence on one line, ending with a full
+  stop. Reasons and examples never stand in it.
 - `level`: `required` (a deviation needs the deviation process: scope, reason,
   risk and migration target), `recommended` (a deviation needs a reason) or
   `permitted` (states that something is allowed).
@@ -91,17 +108,20 @@ The statement of the rule is the body of the file. The front matter has:
   removing `next`. The check of this repository fails while a `from` does not
   lie above the current version, so a step that falls due is taken or its
   `next` is changed.
+- `rationale`: the failure the rule prevents or the property it secures, as
+  Markdown text.
+- `examples`: optional examples, as Markdown text, code blocks included.
 
-The body of a rule starts with the statement as one plain sentence in one
-paragraph, followed by `## Rationale` (required) and `## Examples` (optional).
-Reasons and examples never stand in the statement.
+The schema requires `statement` and `rationale`, so a rule without a rationale
+fails it. Markdown text stands in a YAML block (`|`), has no headings of its own
+and needs no inline HTML; the generator writes the headings where it sets an
+item into a page.
 
-Definitions and principles have `name` and `status` (and `reason` and
-`replaced-by` when retired), no scope fields and a body of plain text. A group
-has `name`, `status` and `rules`, a list of rule identifiers, and the same
-`reason` and `replaced-by` when retired. An item file has no top-level heading;
-the generator writes the heading where it sets the item into a page. An item
-file needs no inline HTML.
+Definitions and principles have `name`, `status` and `text` (the term and its
+meaning, or the attitude, as Markdown text), the same `reason` and `replaced-by`
+when retired, and no scope fields. A group has `name`, `status`, `rules` (a list
+of rule identifiers), optionally `text` (what the set of rules is for, as
+Markdown text), and the same `reason` and `replaced-by` when retired.
 
 ## Where a rule holds
 
@@ -146,16 +166,21 @@ everywhere (the field is absent)   whatever a member of the organization works o
 
 - A page source (`pages-src/<name>.md`) is written by hand: headings,
   connecting sentences and, at each place where an item stands, a reference to
-  it. Its front matter has `title` and `summary` (one sentence) and nothing
-  else; a page has no scope and no level.
+  it. It stays a Markdown file, because it is prose that references items. Its
+  front matter has `title` and `summary` (one sentence) and nothing else; a page
+  has no scope and no level.
 - An item is referenced on a line of its own by an HTML comment of the form
   `<!-- item: R042 -->`.
 - The finished page (`pages/<name>.md`) is written by a generator only: a first
   line that names its source, the `title` as top-level heading, and each
   referenced item set in at its place under a heading of its identifier and
-  name, one level below the heading it stands under, with its own headings one
-  level lower still. It is committed, so that it reads as continuous text on
-  GitHub.
+  name, one level below the heading it stands under. A rule shows its statement,
+  then its rationale and examples under the headings `Rationale` and `Examples`
+  one level lower still; a definition, a principle or a group shows its `text`.
+  The page is committed, so that it reads as continuous text on GitHub.
+- The checks for Markdown (format, lint rules, links) run on the generated
+  pages, so a broken link in a rationale is found there, and the finding names
+  the page.
 - Every active rule stands on at least one page, so a person who reads the pages
   has read every rule in the wording the files hold.
 
@@ -222,8 +247,8 @@ For a rule:
 | `languages` or `repositories` narrowed: a value removed, a node replaced by one below it, or the field added | `relaxed`                                        |
 | `next` added, or changed to announce more or from an earlier version                                         | `announced`                                      |
 | `next` changed to announce less or from a later version, or removed without its step being taken             | `relaxed`                                        |
-| The statement, `applies-when` or `except`                                                                    | the kind the title claims                        |
-| The rationale, the examples, `name`, `enforced-by`, `principles`, `reason` or `replaced-by`                  | `editorial`                                      |
+| `statement`, `applies-when` or `except`                                                                      | the kind the title claims                        |
+| `rationale`, `examples`, `name`, `enforced-by`, `principles`, `reason` or `replaced-by`                      | `editorial`                                      |
 
 For a definition, a principle and a group, which bind nothing by themselves:
 
@@ -232,7 +257,8 @@ For a definition, a principle and a group, which bind nothing by themselves:
 | A new item                                                                              | `added`                   |
 | `status` to `retired`                                                                   | `retired`                 |
 | Any other change of `status`; `name`, `reason` or `replaced-by`; the `rules` of a group | `editorial`               |
-| The body of a definition or a principle                                                 | the kind the title claims |
+| The `text` of a group                                                                   | `editorial`               |
+| The `text` of a definition or a principle                                               | the kind the title claims |
 
 - `level` rises from `permitted` to `recommended` to `required`; `existing`
   rises from `exempt` to `on-touch` to `required`.
@@ -275,13 +301,15 @@ change:
   `announce` raises the patch version.
 - The own types are written from the first pull request on. Below `0.1.0` every
   change raises the patch version whatever its type.
-- For free text that carries meaning (the statement of a rule, `applies-when`,
-  `except`, the body of a definition or a principle), no program can read
-  whether new wording demands more or only reads better. The type of the title
-  is the author's claim about it, and review judges the claim.
+- For free text that carries meaning (the `statement` of a rule,
+  `applies-when`, `except`, the `text` of a definition or a principle), no
+  program can read whether new wording demands more or only reads better. The
+  type of the title is the author's claim about it, and review judges the claim.
 - The check of this repository holds the title at least as strict as what the
-  fields of the changed items show. `rule!` is the strictest, then the other own
-  types, then any other type. A raised `level` under a title without `!` fails.
+  fields of the changed items show. `rule!` is the strictest, then `rule`,
+  `relax` and `retire`, then `announce`, then any other type. A raised `level`
+  under a title without `!` fails, and so does an added, relaxed or retired rule
+  under `announce`.
 - A change of free text that carries meaning under an editorial title passes,
   and the check names the item for the reviewer. A corrected typo in a statement
   stays possible, and a hidden stricter step is seen.
@@ -321,25 +349,20 @@ depends on such a branch.
 
 ## A worked example
 
-A rule file, `rules/R042.md`:
+A rule file, `rules/R042.yaml`:
 
-```markdown
----
+```yaml
 name: coverage-gate
+statement: A change covers every line of code it adds or changes with a test.
 status: active
 level: required
 addressee: change
 existing: on-touch
 enforced-by:
   - coverage-gate
----
-
-A change covers every line of code it adds or changes with a test.
-
-## Rationale
-
-Uncovered code is code nobody has seen run; the gate finds it before a reader
-has to.
+rationale: |
+  Uncovered code is code nobody has seen run; the gate finds it before a reader
+  has to.
 ```
 
 A page source, `pages-src/testing.md`, that embeds it:

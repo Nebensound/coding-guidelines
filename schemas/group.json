@@ -1,29 +1,16 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Front matter of a group",
-  "description": "The YAML front matter of a group (groups/G<number>.md). The identifier is the file name. A group has no scope fields.",
+  "title": "A group",
+  "description": "A group of rules (groups/G<number>.yaml). The identifier is the file name without its ending. A group has no scope fields.",
   "type": "object",
   "additionalProperties": false,
   "required": ["name", "status", "rules"],
   "properties": {
     "name": {
-      "description": "A speaking name: lowercase words joined by hyphens. It may change; only the identifier counts.",
-      "type": "string",
-      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*(?![\\s\\S])"
+      "$ref": "item.json#/$defs/name"
     },
     "status": {
-      "description": "planned: published and citable, binds nobody yet. active: in force. retired: the file stays.",
-      "enum": ["planned", "active", "retired"]
-    },
-    "reason": {
-      "description": "Why the group was retired.",
-      "type": "string",
-      "minLength": 1
-    },
-    "replaced-by": {
-      "description": "The group that took the place of a retired group.",
-      "type": "string",
-      "pattern": "^G(?:[0-9]{2}[1-9]|[0-9][1-9][0-9]|[1-9][0-9]{2,})(?![\\s\\S])"
+      "$ref": "item.json#/$defs/status"
     },
     "rules": {
       "description": "The identifiers of the rules of the group.",
@@ -31,29 +18,25 @@
       "minItems": 1,
       "uniqueItems": true,
       "items": {
-        "type": "string",
-        "pattern": "^R(?:[0-9]{2}[1-9]|[0-9][1-9][0-9]|[1-9][0-9]{2,})(?![\\s\\S])"
-      }
-    }
-  },
-  "if": {
-    "properties": {
-      "status": {
-        "const": "retired"
+        "$ref": "item.json#/$defs/rule-id"
       }
     },
-    "required": ["status"]
-  },
-  "then": {
-    "properties": {
-      "reason": true
+    "text": {
+      "description": "What the set of rules is for, as Markdown text without headings.",
+      "type": "string",
+      "minLength": 1
     },
-    "required": ["reason"]
-  },
-  "else": {
-    "properties": {
-      "reason": false,
-      "replaced-by": false
+    "reason": {
+      "$ref": "item.json#/$defs/reason"
+    },
+    "replaced-by": {
+      "description": "The group that took the place of a retired group.",
+      "$ref": "item.json#/$defs/group-id"
     }
-  }
+  },
+  "allOf": [
+    {
+      "$ref": "item.json#/$defs/retired"
+    }
+  ]
 }
