@@ -116,7 +116,7 @@
       }
     },
     "next": {
-      "description": "Announcement of a stricter step: what is to hold from a named version on. It does not take effect by itself: a pull request takes the step by raising level or existing and removing next.",
+      "description": "Announcement of a stricter step: what is to hold from a named version on. It changes nothing by itself: the pull request that brings the version named in from takes the step, rewrites level and existing to what next announced and removes next, which the fields show as stricter. The check fails while a rule carries a next whose from is not above the current version.",
       "type": "object",
       "additionalProperties": false,
       "required": ["from"],

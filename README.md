@@ -109,11 +109,14 @@ The file of a rule has these fields:
 - `next`: optional announcement of a stricter step, a table with `from` and at
   least one of `level` and `existing`: what is to hold from that version on.
   `from` names a version that can carry an incompatible change: `X.0.0`, or
-  `0.Y.0` below `1.0.0`. `next` does not take effect by itself: a pull request
-  takes the step by raising `level` or `existing` to what `next` announced and
-  removing `next`. The check of this repository fails while a `from` does not
-  lie above the current version, so a step that falls due is taken or its
-  `next` is changed.
+  `0.Y.0` below `1.0.0`. `next` announces the step and changes nothing by
+  itself. The pull request that brings the version named in `from` takes the
+  step: it rewrites `level` and `existing` to what `next` announced and removes
+  `next`, and the fields show it as `stricter`. The check of this repository
+  fails while a rule carries a `next` whose `from` is not above the current
+  version of the guidelines (the newest tag on `main`, `0.0.0` before the
+  first), so an announced step is either taken or its `from` is moved, never
+  silently passed.
 - `rationale`: the failure the rule prevents or the property it secures, as
   Markdown text.
 - `examples`: optional examples, as Markdown text, code blocks included.
@@ -203,10 +206,10 @@ incompatible.
 | Change                                                                                 | Kind        | A repository that met everything | From `1.0.0` |
 | -------------------------------------------------------------------------------------- | ----------- | -------------------------------- | ------------ |
 | A rule becomes stricter; a new rule, or a planned one made `active`, binds what exists | `stricter`  | may no longer meet it            | major        |
-| A new rule that does not bind what exists                                              | `added`     | still meets it                   | minor        |
+| A new rule, or a planned one made `active`, does not bind what exists                  | `added`     | still meets it                   | minor        |
 | A rule is relaxed                                                                      | `relaxed`   | still meets it                   | minor        |
 | A rule is retired                                                                      | `retired`   | still meets it                   | minor        |
-| A stricter step is announced: a new rule with `status: planned`, or `next` on a rule   | `announced` | still meets it                   | patch        |
+| A step is announced: a new rule with `status: planned`, or `next` on a rule            | `announced` | still meets it                   | patch        |
 | Editorial                                                                              | `editorial` | unaffected                       | patch        |
 
 - A rule binds what exists when its `level` is `required` or `recommended` and
@@ -221,11 +224,14 @@ incompatible.
   it `active`. When it binds what exists, that pull request is `stricter` and
   the rule binds from the major version it brings; otherwise it is `added`. The
   `from` of `next` names the major version of the stricter step, and the pull
-  request that takes the step is `stricter`. An announcement asks nothing of
-  anyone yet, so it raises only the patch version. Relaxing and retiring need no
-  announcement.
-- Below `1.0.0` no announcement is needed: an incompatible step binds from the
-  version that carries it.
+  request that brings that version takes the step and is `stricter`. An
+  announcement asks nothing of anyone yet, so every announcement raises only the
+  patch version, whatever it announces. The pull request that fulfils it carries
+  the weight: `added` (minor) or `stricter` (major). Relaxing and retiring need
+  no announcement.
+- Below `1.0.0` nothing has to be announced: an incompatible step binds from the
+  version that carries it. `status: planned` and `next` stay available below
+  `1.0.0` for whoever wants to announce a step, but nothing requires them.
 - A retired rule keeps its file and its identifier is never given again, so a
   citation never points at nothing.
 
@@ -251,6 +257,7 @@ For a rule:
 | `addressee` changed                                                                                          | `stricter`                                       |
 | `languages` or `repositories` widened: a value added, a node replaced by one above it, or the field removed  | `stricter`                                       |
 | `languages` or `repositories` narrowed: a value removed, a node replaced by one below it, or the field added | `relaxed`                                        |
+| `next` removed and `level` or `existing` rewritten to what it announced: the step is taken                   | `stricter`                                       |
 | `next` added, or changed to announce more or from an earlier version                                         | `announced`                                      |
 | `next` changed to announce less or from a later version, or removed without its step being taken             | `relaxed`                                        |
 | `statement`, `applies-when` or `except`                                                                      | the kind the title claims                        |
@@ -275,8 +282,8 @@ For a definition, a principle and a group, which bind nothing by themselves:
   rule with `status: retired` binds nobody, so a change of its fields other than
   `status` is `editorial`.
 - `next` is removed without its step being taken when the same pull request
-  does not raise `level` or `existing` to what `next` announced. When it does,
-  the raise counts.
+  does not rewrite `level` and `existing` to what `next` announced. When it
+  does, the step is taken: the raise counts, and the item is `stricter`.
 - When several rows apply to one file and one of them is `stricter`, the item
   is `stricter`. Otherwise it counts with each kind its rows show, and with
   `editorial` only when no other kind applies.
@@ -303,8 +310,9 @@ change:
 - The breaking marker `!` stands only in `rule!`. The type `feat` is not used:
   a rulebook has no features.
 - `rule`, `relax`, `retire` and `announce` are the repository's own types.
-  `rule`, `relax` and `retire` raise the minor version from `1.0.0` on;
-  `announce` raises the patch version.
+  `rule`, `relax` and `retire` raise the minor version from `1.0.0` on.
+  `announce` raises the patch version, the same step as an editorial type; it
+  is a type of its own so that the list of the version names the announcement.
 - The own types are written from the first pull request on. Below `0.1.0` every
   change raises the patch version whatever its type.
 - For free text that carries meaning (the `statement` of a rule,

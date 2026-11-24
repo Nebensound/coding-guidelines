@@ -66,11 +66,18 @@ The rules below apply to every change, whoever makes it.
 - From `1.0.0` on, an incompatible step (a stricter rule, or a new rule that
   binds what exists) is announced in an earlier version, by `next` or by
   `status: planned`, and binds from the major version that switches it on.
-  Below `1.0.0` no announcement is needed. Relaxing and retiring need no
-  announcement.
-- `next` does not take effect by itself. The pull request that takes the step
-  raises `level` or `existing` to what `next` announced and removes `next`. A
-  `from` that does not lie above the current version fails the check.
+  Below `1.0.0` nothing has to be announced: a stricter step binds from the
+  version that carries it, and `next` and `status: planned` stay available but
+  nothing requires them. Relaxing and retiring need no announcement.
+- An announcement raises the patch version, under the type `announce`. The pull
+  request that fulfils it carries the weight: `rule` when the rule does not bind
+  what exists, `rule!` when it does.
+- `next` announces a step and changes nothing by itself. The pull request that
+  brings the version named in `from` takes the step: it rewrites `level` and
+  `existing` to what `next` announced and removes `next`, and the fields show
+  it as `stricter`. The check fails while a rule carries a `next` whose `from`
+  is not above the current version, so the step is either taken or its `from`
+  is moved.
 - An item is one YAML file, `<folder>/<identifier>.yaml`, and validates against
   the schema of its kind; the front matter of a page source validates against
   `page.json`. An editor with the YAML language server checks item files while
