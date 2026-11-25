@@ -184,8 +184,10 @@ code block the same characters are text, not a reference.
   the check can tell.
 - No field lists the definitions an item uses. Which items refer to a
   definition is read from these references.
-- A page source also has the long form, which sets a whole item in. It is
-  described in [Reading pages](#reading-pages).
+- The short form of a group, `[G0002]`, links to the group's own page, like
+  that of any other item.
+- A page source also has the long form, which sets a whole item in, a group
+  with all its rules. It is described in [Reading pages](#reading-pages).
 
 ## Where a rule holds
 
@@ -242,10 +244,17 @@ everywhere (the field is absent)   own and foreign together
   which is the `statement` of a rule or a principle, the `term` of a definition
   in bold with a colon followed by its `meaning`, or the `purpose` of a group;
   then every other field it sets, as a list in the order the fields sections of
-  this README name them, a value as code, a text as text and the `groups` and
-  `rules` of a group in the short form; then its `explanation`, `rationale` and
-  `examples` under the headings `Explanation`, `Rationale` and `Examples`, one
-  level lower.
+  this README name them, a value as code and a text as text; then its
+  `explanation`, `rationale` and `examples` under the headings `Explanation`,
+  `Rationale` and `Examples`, one level lower.
+- The long form of a group, `<!-- item: G0002 -->`, sets the whole group in at
+  that place: its heading and `purpose`, then every rule of its resolved set in
+  full, each as the long form of that rule would set it, so a page can place a
+  set of rules without naming each one. The order is the order written: first
+  the included groups in the order of `groups`, each under a heading of its own
+  with its rules, then the group's own `rules`. A rule that already stands on
+  the same page, by itself or through another group, is not set in a second
+  time: its place shows the short form, a link to where it stands.
 - Every item has a page of its own, `pages/items/<identifier>.md`, written by
   the generator: a first line that names the file of the item, then the item
   with its identifier and name as the top-level heading. The page of a rule, a
@@ -264,9 +273,9 @@ everywhere (the field is absent)   own and foreign together
   sources, with one rule switched off for `pages-src/` only: the one on
   undefined reference labels (MD052), because there a short form is a link
   label without a definition until the generator resolves it.
-- Every active rule stands in full, by the long form, on at least one reading
-  page, so a person who reads the pages has read every rule in the wording the
-  files hold.
+- Every active rule stands in full, by the long form of the rule or of a group
+  that holds it, on at least one reading page, so a person who reads the pages
+  has read every rule in the wording the files hold.
 
 The folder [`pages/`](pages) holds every page; reading starts at the start page.
 The `README.md` in each folder describes the folder; it is neither an item nor a
