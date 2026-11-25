@@ -6,5 +6,8 @@
     // references in page sources, are not elements and stay allowed.
     "MD033": true,
   },
-  "ignores": ["node_modules/**"],
+  // Page sources are checked through the pages generated from them, where
+  // every reference by identifier is resolved. In a source, such a reference
+  // is a link label without a definition.
+  "ignores": ["node_modules/**", "pages-src/**"],
 }

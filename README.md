@@ -85,7 +85,9 @@ The file of a rule has these fields:
 
 - `name`.
 - `statement`: the rule as one plain sentence on one line, ending with a full
-  stop. Reasons and examples never stand in it.
+  stop. Reasons and examples never stand in it. It may refer to items in the
+  short form (see [References](#references)) and carries no other Markdown
+  than code spans.
 - `level`: `required` (a deviation needs the deviation process: scope, reason,
   risk and migration target), `recommended` (a deviation needs a reason) or
   `permitted` (states that something is allowed).
@@ -143,6 +145,34 @@ and `replaced-by` when retired, and no scope fields. Besides:
   which principles and definitions belong to it follows from its rules, so they
   are not listed a second time.
 
+## References
+
+Text refers to an item in the short form: a Markdown reference link whose label
+is the identifier of the item. It has two shapes, and only these:
+
+- `[some words][D0003]`: the words, linked to the item.
+- `[R0042]`: the identifier alone, shown as identifier and name,
+  `R0042 (coverage-gate)`, and linked to the item.
+
+The label is written exactly as the identifier is. Nobody writes a definition
+for the label: the generator resolves every reference and links it to the
+item's own page (see [Reading pages](#reading-pages)). A reference to an item
+that does not exist fails the check of this repository. Inside a code span or a
+code block the same characters are text, not a reference.
+
+- The short form may stand in every field of an item that holds text, except
+  `name` and `term`, and in page sources.
+- A `statement`, of a rule or of a principle, stays one plain sentence. The
+  short form is the only Markdown it may carry besides code spans, so that a
+  rule can link the terms it uses to the definitions that fix them. The schema
+  holds that a square bracket outside a code span stands in a statement only as
+  part of a reference of one of the two shapes; whether the item exists, only
+  the check can tell.
+- No field lists the definitions an item uses. Which items refer to a
+  definition is read from these references.
+- A page source also has the long form, which sets a whole item in. It is
+  described in [Reading pages](#reading-pages).
+
 ## Where a rule holds
 
 Rules hold in layers, and the lowest layer binds wherever a member of the
@@ -185,29 +215,41 @@ everywhere (the field is absent)   whatever a member of the organization works o
 ## Reading pages
 
 - A page source (`pages-src/<name>.md`) is written by hand: headings,
-  connecting sentences and, at each place where an item stands, a reference to
-  it. It stays a Markdown file, because it is prose that references items. Its
-  front matter has `title` and `summary` (one sentence) and nothing else; a page
-  has no scope and no level.
-- An item is referenced on a line of its own by an HTML comment of the form
-  `<!-- item: R0042 -->`.
+  connecting sentences, references in the short form and, at each place where
+  an item stands in full, the long form. It stays a Markdown file, because it is
+  prose that references items. Its front matter has `title` and `summary` (one
+  sentence) and nothing else; a page has no scope and no level.
+- The long form is an HTML comment on a line of its own, `<!-- item: R0042 -->`.
+  It sets the whole item in.
 - The finished page (`pages/<name>.md`) is written by a generator only: a first
-  line that names its source, the `title` as top-level heading, and each
-  referenced item set in at its place under a heading of its identifier and
-  name, one level below the heading it stands under. A rule shows its statement,
-  then its explanation, rationale and examples under the headings
-  `Explanation`, `Rationale` and `Examples` one level lower still; a definition
-  shows its `term` and `meaning`, a principle its `statement` and
-  `explanation`, a group its `purpose` and `rules`.
-  The page is committed, so that it reads as continuous text on GitHub.
+  line that names its source, the `title` as top-level heading, then the text
+  of the source with each short form resolved to a link and each long form
+  replaced by its item.
+- An item set in stands under a heading of its identifier and name, one level
+  below the heading it stands under. It shows, in this order: its first text,
+  which is the `statement` of a rule or a principle, the `term` of a definition
+  in bold with a colon followed by its `meaning`, or the `purpose` of a group;
+  then every other field it sets, as a list in the order the fields sections of
+  this README name them, a value as code, a text as text and the `rules` of a
+  group in the short form; then its `explanation`, `rationale` and `examples`
+  under the headings `Explanation`, `Rationale` and `Examples`, one level lower.
+- Every item has a page of its own, `pages/items/<identifier>.md`, written by
+  the generator: a first line that names the file of the item, the identifier
+  and name as top-level heading, and the item as the long form shows it. The
+  short form links to this page. Once the site exists, the permanent address of
+  a rule shows the rule's own page.
+- The pages are committed, so that they read as continuous text on GitHub.
 - The checks for Markdown (format, lint rules, links) run on the generated
-  pages, so a broken link in a rationale is found there, and the finding names
-  the page.
-- Every active rule stands on at least one page, so a person who reads the pages
-  has read every rule in the wording the files hold.
+  pages, where every reference is resolved, so a broken link in a rationale is
+  found there, and the finding names the page. markdownlint leaves `pages-src/`
+  out: there, a short form is a link label without a definition.
+- Every active rule stands in full, by the long form, on at least one reading
+  page, so a person who reads the pages has read every rule in the wording the
+  files hold.
 
 The folder [`pages/`](pages) is the index of the pages. The `README.md` in each
-folder describes the folder; it is neither an item nor a page.
+folder describes the folder; it is neither an item nor a page, and the
+generator leaves it alone.
 
 ## Versions
 
@@ -353,8 +395,9 @@ are not affected; they are read per item.
 ### Derived data
 
 Since which version an item exists, in which version it last changed in
-substance, and the list of changes per version by kind are read from the history
-of `main` and the tags, never written by hand. Each touched item counts with the
+substance, the list of changes per version by kind, and per definition the
+items that refer to it are read from the history of `main`, the tags and the
+files, never written by hand. Each touched item counts with the
 kind its fields show. Where only its free text that carries meaning changed, it
 counts with the kind the title claims. Where both changed, the kind with the
 larger version step counts, and the kind the fields show when the steps are
@@ -381,7 +424,7 @@ A rule file, `rules/R0042.yaml`:
 
 ```yaml
 name: coverage-gate
-statement: A change covers every line of code it adds or changes with a test.
+statement: A change covers every line of code it adds or changes with a [test][D0007].
 status: active
 level: required
 addressee: change
@@ -415,8 +458,8 @@ title: Testing
 summary: How a change is tested and what the tests must cover.
 ---
 
-Tests show that a change does what it claims. The rule below says how much of
-the code they must reach.
+Tests show that a change does what it claims. [R0042] says how much of the
+code they must reach.
 
 <!-- item: R0042 -->
 ```
@@ -428,12 +471,20 @@ The resulting page, `pages/testing.md`, written by the generator:
 
 # Testing
 
-Tests show that a change does what it claims. The rule below says how much of
-the code they must reach.
+Tests show that a change does what it claims.
+[R0042 (coverage-gate)](items/R0042.md) says how much of the code they must
+reach.
 
 ## R0042 (coverage-gate)
 
-A change covers every line of code it adds or changes with a test.
+A change covers every line of code it adds or changes with a
+[test](items/D0007.md).
+
+- `level`: `required`
+- `status`: `active`
+- `addressee`: `change`
+- `existing`: `on-touch`
+- `enforced-by`: `coverage-gate`
 
 ### Explanation
 
@@ -444,6 +495,19 @@ measured is left to the tools of each language.
 
 Uncovered code is code nobody has seen run; the gate finds it before a reader
 has to.
+```
+
+The page of the definition, `pages/items/D0007.md`, written by the generator:
+
+```markdown
+<!-- Generated from definitions/D0007.yaml. Do not edit. -->
+
+# D0007 (test)
+
+**test**: Code that runs other code and fails when that code does not behave as
+expected.
+
+- `status`: `active`
 ```
 
 ## Contributing
