@@ -47,9 +47,9 @@ The rules below apply to every change, whoever makes it.
 - What a change does to an item (`stricter`, `added`, `relaxed`, `retired`,
   `announced` or `editorial`) follows from the fields of the item, as described
   in [What a change does to an item](README.md#what-a-change-does-to-an-item).
-  For the `statement` of a rule, `applies-when`, `except` and the `text` of a
-  definition or a principle, the type of the title claims it, and review judges
-  the claim.
+  For the `statement` of a rule or a principle, `applies-when`, `except` and the
+  `term` and `meaning` of a definition, the type of the title claims it, and
+  review judges the claim.
 - The type of the title names the kind, as described in
   [The title of a pull request](README.md#the-title-of-a-pull-request): `rule!`
   for `stricter`; `rule`, `relax`, `retire` or `announce` for `added`,

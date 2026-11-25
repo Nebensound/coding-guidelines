@@ -9,12 +9,14 @@
       "$ref": "item.json"
     }
   ],
-  "required": ["text"],
+  "required": ["statement"],
   "properties": {
-    "text": {
-      "description": "The attitude the principle states, as Markdown text without headings.",
-      "type": "string",
-      "minLength": 1
+    "statement": {
+      "description": "The principle as one plain sentence on one line.",
+      "$ref": "item.json#/$defs/statement"
+    },
+    "explanation": {
+      "$ref": "item.json#/$defs/explanation"
     },
     "replaced-by": {
       "$ref": "item.json#/$defs/principle-id"

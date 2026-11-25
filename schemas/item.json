@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://nebensound.github.io/coding-guidelines/schemas/item.json",
   "title": "An item",
-  "description": "What every kind of item shares: name, status, reason and replaced-by, the condition on a retired item, and the patterns of the identifiers. The schema of each kind references this file and adds only what is its own; no item file is checked against this file alone.",
+  "description": "What every kind of item shares: name, status, reason and replaced-by, the condition on a retired item, and the patterns of the identifiers; and the statement and the explanation, which a rule and a principle share. The schema of each kind references this file and adds only what is its own; no item file is checked against this file alone.",
   "type": "object",
   "required": ["name", "status"],
   "properties": {
@@ -65,6 +65,16 @@
       "description": "The identifier of a group: G and four digits from 0001, a fifth digit only after 9999.",
       "type": "string",
       "pattern": "^G(?:[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3,})(?![\\s\\S])"
+    },
+    "statement": {
+      "description": "One plain sentence on one line, ending with a full stop. Reasons and examples never stand in it.",
+      "type": "string",
+      "pattern": "^\\S[^\\n]*\\.(?![\\s\\S])"
+    },
+    "explanation": {
+      "description": "How to read and apply the statement, as Markdown text without headings. It cannot widen what binds; its change is editorial.",
+      "type": "string",
+      "minLength": 1
     }
   }
 }

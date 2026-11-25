@@ -60,8 +60,7 @@
   "properties": {
     "statement": {
       "description": "The rule as one plain sentence on one line. Reasons and examples never stand in it.",
-      "type": "string",
-      "pattern": "^\\S[^\\n]*\\.(?![\\s\\S])"
+      "$ref": "item.json#/$defs/statement"
     },
     "level": {
       "$ref": "#/$defs/level"
@@ -147,6 +146,9 @@
           "$ref": "#/$defs/existing"
         }
       }
+    },
+    "explanation": {
+      "$ref": "item.json#/$defs/explanation"
     },
     "rationale": {
       "description": "The failure the rule prevents or the property it secures, as Markdown text without headings.",

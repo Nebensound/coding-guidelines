@@ -117,6 +117,9 @@ The file of a rule has these fields:
   version of the guidelines (the newest tag on `main`, `0.0.0` before the
   first), so an announced step is either taken or its `from` is moved, never
   silently passed.
+- `explanation`: optional longer text on how to read and apply the statement,
+  as Markdown text. What binds stays the `statement` with `applies-when` and
+  `except`; the explanation cannot widen it, and a change of it is editorial.
 - `rationale`: the failure the rule prevents or the property it secures, as
   Markdown text.
 - `examples`: optional examples, as Markdown text, code blocks included.
@@ -126,11 +129,19 @@ fails it. Markdown text stands in a YAML block (`|`), has no headings of its own
 and needs no inline HTML; the generator writes the headings where it sets an
 item into a page.
 
-Definitions and principles have `name`, `status` and `text` (the term and its
-meaning, or the attitude, as Markdown text), the same `reason` and `replaced-by`
-when retired, and no scope fields. A group has `name`, `status`, `rules` (a list
-of rule identifiers), optionally `text` (what the set of rules is for, as
-Markdown text), and the same `reason` and `replaced-by` when retired.
+## Fields of a definition, a principle and a group
+
+Definitions, principles and groups have `name` and `status`, the same `reason`
+and `replaced-by` when retired, and no scope fields. Besides:
+
+- A definition has `term`, the word or phrase as it is written, on one line,
+  and `meaning`, what it means, as Markdown text. Both are required.
+- A principle has `statement`, the principle as one plain sentence in the same
+  form as the statement of a rule, and optionally `explanation`, as for a rule.
+- A group has `rules`, a list of rule identifiers, and optionally `purpose`,
+  what the set of rules is for, as Markdown text. A group holds rules only:
+  which principles and definitions belong to it follows from its rules, so they
+  are not listed a second time.
 
 ## Where a rule holds
 
@@ -184,8 +195,10 @@ everywhere (the field is absent)   whatever a member of the organization works o
   line that names its source, the `title` as top-level heading, and each
   referenced item set in at its place under a heading of its identifier and
   name, one level below the heading it stands under. A rule shows its statement,
-  then its rationale and examples under the headings `Rationale` and `Examples`
-  one level lower still; a definition, a principle or a group shows its `text`.
+  then its explanation, rationale and examples under the headings
+  `Explanation`, `Rationale` and `Examples` one level lower still; a definition
+  shows its `term` and `meaning`, a principle its `statement` and
+  `explanation`, a group its `purpose` and `rules`.
   The page is committed, so that it reads as continuous text on GitHub.
 - The checks for Markdown (format, lint rules, links) run on the generated
   pages, so a broken link in a rationale is found there, and the finding names
@@ -261,7 +274,7 @@ For a rule:
 | `next` added, or changed to announce more or from an earlier version                                         | `announced`                                      |
 | `next` changed to announce less or from a later version, or removed without its step being taken             | `relaxed`                                        |
 | `statement`, `applies-when` or `except`                                                                      | the kind the title claims                        |
-| `rationale`, `examples`, `name`, `enforced-by`, `principles`, `reason` or `replaced-by`                      | `editorial`                                      |
+| `explanation`, `rationale`, `examples`, `name`, `enforced-by`, `principles`, `reason` or `replaced-by`       | `editorial`                                      |
 
 For a definition, a principle and a group, which bind nothing by themselves:
 
@@ -270,8 +283,8 @@ For a definition, a principle and a group, which bind nothing by themselves:
 | A new item                                                                              | `added`                   |
 | `status` to `retired`                                                                   | `retired`                 |
 | Any other change of `status`; `name`, `reason` or `replaced-by`; the `rules` of a group | `editorial`               |
-| The `text` of a group                                                                   | `editorial`               |
-| The `text` of a definition or a principle                                               | the kind the title claims |
+| The `purpose` of a group; the `explanation` of a principle                              | `editorial`               |
+| The `term` or the `meaning` of a definition; the `statement` of a principle             | the kind the title claims |
 
 - `level` rises from `permitted` to `recommended` to `required`; `existing`
   rises from `exempt` to `on-touch` to `required`.
@@ -315,10 +328,11 @@ change:
   is a type of its own so that the list of the version names the announcement.
 - The own types are written from the first pull request on. Below `0.1.0` every
   change raises the patch version whatever its type.
-- For free text that carries meaning (the `statement` of a rule,
-  `applies-when`, `except`, the `text` of a definition or a principle), no
-  program can read whether new wording demands more or only reads better. The
-  type of the title is the author's claim about it, and review judges the claim.
+- For free text that carries meaning (the `statement` of a rule or a
+  principle, `applies-when`, `except`, the `term` and the `meaning` of a
+  definition), no program can read whether new wording demands more or only
+  reads better. The type of the title is the author's claim about it, and
+  review judges the claim.
 - The check of this repository holds the title at least as strict as what the
   fields of the changed items show. `rule!` is the strictest, then `rule`,
   `relax` and `retire`, then `announce`, then any other type. A raised `level`
@@ -374,9 +388,23 @@ addressee: change
 existing: on-touch
 enforced-by:
   - coverage-gate
+explanation: |
+  A line counts as covered when at least one test runs it. How coverage is
+  measured is left to the tools of each language.
 rationale: |
   Uncovered code is code nobody has seen run; the gate finds it before a reader
   has to.
+```
+
+A definition file, `definitions/D0007.yaml`:
+
+```yaml
+name: test
+term: test
+status: active
+meaning: |
+  Code that runs other code and fails when that code does not behave as
+  expected.
 ```
 
 A page source, `pages-src/testing.md`, that embeds it:
@@ -406,6 +434,11 @@ the code they must reach.
 ## R0042 (coverage-gate)
 
 A change covers every line of code it adds or changes with a test.
+
+### Explanation
+
+A line counts as covered when at least one test runs it. How coverage is
+measured is left to the tools of each language.
 
 ### Rationale
 
