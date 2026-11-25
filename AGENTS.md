@@ -26,8 +26,8 @@ This applies to every change, whoever makes it.
 - Split a sentence that holds two requirements, which can be followed or
   violated separately, into two rules. Decide between rule and principle as
   described in [Kinds of content](README.md#kinds-of-content).
-- Write the fields as described in [Fields of a rule](README.md#fields-of-a-rule)
-  and
+- Write the fields as described in
+  [Fields of a rule](README.md#fields-of-a-rule) and
   [Fields of a definition, a principle and a group](README.md#fields-of-a-definition-a-principle-and-a-group).
   A rationale that only says "best practice" is not one.
 - Refer to an item in the short form described in

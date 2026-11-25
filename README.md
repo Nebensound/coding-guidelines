@@ -33,7 +33,7 @@ decides what binds; no wording does.
 | Definition   | exactly one term and its meaning                                            | `D` and number | no                  |
 | Principle    | what rules are built on; not decidable for a single change                  | `P` and number | no                  |
 | Group        | a named set of rules, for instance a definition of done                     | `G` and number | through its rules   |
-| Reading page | a text for people: headings, order and connecting sentences, rules embedded | its file name  | never               |
+| Reading page | a text for people: headings, order and connecting sentences, items embedded | none           | never               |
 
 - Principles are what rules are built on, rules use the terms that definitions
   fix, and only a rule binds. The text of a reading page orders and connects
@@ -53,10 +53,11 @@ decides what binds; no wording does.
 | Group      | `groups/G<number>.yaml`      | [`group.json`](schemas/group.json)           |
 
 - The fields every item shares (`name`, `status`, `reason`, `replaced-by`), the
-  condition that a retired item names its `reason`, and the patterns of the
-  identifiers stand once, in [`item.json`](schemas/item.json). The schemas of
-  the kinds reference it and hold only what is theirs; a field that neither
-  defines is refused.
+  condition that a retired item names its `reason`, the patterns of the
+  identifiers, and the form of the `statement` and the `explanation` that a
+  rule and a principle share stand once, in [`item.json`](schemas/item.json).
+  The schemas of the kinds reference it and hold only what is theirs; a field
+  that neither defines is refused.
 - Each schema names itself by an `$id` under
   `https://nebensound.github.io/coding-guidelines/schemas/`. A reference from
   one schema to another is resolved to the file beside it in `schemas/`.
@@ -102,9 +103,9 @@ The file of a rule has these fields:
   `permitted` (states that something is allowed).
 - `status`: `planned` (a new rule, published and citable, that binds nobody
   until a pull request makes it `active`; see
-  [Announcing a step](#announcing-a-step)), `active` or `retired` (the file stays, with `reason`, and
-  `replaced-by` where a rule took its place). No separate register of retired
-  identifiers exists.
+  [Announcing a step](#announcing-a-step)), `active` or `retired` (the file
+  stays, with `reason`, and `replaced-by` where a rule took its place). No
+  separate register of retired identifiers exists.
 - `addressee`: `change`, `repository` or `organization`.
 - `languages` and `repositories`: optional lists of fixed values that the schema
   names. Within a field one value must fit, between fields all must. An absent
@@ -117,7 +118,7 @@ The file of a rule has these fields:
 - `enforced-by`: a list whose values are `review` or the name of an automated
   check as its owner calls it (lowercase words, hyphens, slashes). The schema
   fixes the form, not the names.
-- `principles`: optional list of the principles the rule follows from.
+- `principles`: optional list of the principles the rule is built on.
 - `next`: optional announcement of a stricter step on a rule that binds
   already: a table with `from`, the version of the step, and at least one of
   `level` and `existing`, what is to hold from that version on. See
@@ -235,8 +236,8 @@ everywhere (the field is absent)   own and foreign together
   group in the short form; then its `explanation`, `rationale` and `examples`
   under the headings `Explanation`, `Rationale` and `Examples`, one level lower.
 - Every item has a page of its own, `pages/items/<identifier>.md`, written by
-  the generator: a first line that names the file of the item, the identifier
-  and name as top-level heading, and the item as the long form shows it. The
+  the generator: a first line that names the file of the item, then the item as
+  the long form shows it, its identifier and name as the top-level heading. The
   short form links to this page. Once the site exists, the permanent address of
   a rule shows the rule's own page.
 - The start page is `pages-src/index.md`, generated as `pages/index.md`. Every
@@ -395,7 +396,7 @@ For a definition, a principle and a group, which bind nothing by themselves:
   `editorial` only when no other kind applies.
 - A file is never moved or removed once its identifier is taken. Before that, a
   renumbered item counts as a new item, and a dropped item has no kind, because
-  no version contained it.
+  no full version on `main` contained it.
 - A page source binds nothing; a change of it is `editorial`.
 
 ### The title of a pull request
@@ -448,9 +449,9 @@ are not affected; they are read per item.
 Since which version an item exists, in which version it last changed in
 substance, the list of changes per version by kind, and per definition the
 items that refer to it are read from the history of `main`, the tags and the
-files, never written by hand. Each touched item counts with the
-kind its fields show. Where only its free text that carries meaning changed, it
-counts with the kind the title claims. Where both changed, the kind with the
+files, never written by hand. Each touched item counts with the kind its fields
+show. Where only its free text that carries meaning changed, it counts with the
+kind the title claims. Where both changed, the kind with the
 larger version step counts, and the kind the fields show when the steps are
 equal. A rule has no version number of its own.
 
@@ -501,7 +502,7 @@ meaning: |
   expected.
 ```
 
-A page source, `pages-src/testing.md`, that embeds it:
+A page source, `pages-src/testing.md`, that embeds the rule:
 
 ```markdown
 # Testing
