@@ -17,9 +17,9 @@ linter, with reading pages for people that embed the rules.
 Each item (a rule, definition, principle or group) is one YAML file that holds
 all of it and is checked against a JSON Schema in [`schemas/`](schemas). No
 Markdown file stands beside it: text that needs Markdown, code blocks included,
-is a block of text in a field. A page source is a Markdown file with typed YAML
-front matter, checked against its schema the same way. The kind decides what
-binds; no wording does. A page is not an item: it has no identifier.
+is a block of text in a field. A reading page is not an item: it has no
+identifier, and its source is one Markdown file without a header. The kind
+decides what binds; no wording does.
 
 | Kind         | What it is                                                                  | Identifier     | Binds               |
 | ------------ | --------------------------------------------------------------------------- | -------------- | ------------------- |
@@ -44,7 +44,6 @@ binds; no wording does. A page is not an item: it has no identifier.
 | Definition | `definitions/D<number>.yaml` | [`definition.json`](schemas/definition.json) |
 | Principle  | `principles/P<number>.yaml`  | [`principle.json`](schemas/principle.json)   |
 | Group      | `groups/G<number>.yaml`      | [`group.json`](schemas/group.json)           |
-| Page       | `pages-src/<name>.md`        | [`page.json`](schemas/page.json)             |
 
 - The fields every item shares (`name`, `status`, `reason`, `replaced-by`), the
   condition that a retired item names its `reason`, and the patterns of the
@@ -214,16 +213,17 @@ everywhere (the field is absent)   whatever a member of the organization works o
 
 ## Reading pages
 
-- A page source (`pages-src/<name>.md`) is written by hand: headings,
-  connecting sentences, references in the short form and, at each place where
-  an item stands in full, the long form. It stays a Markdown file, because it is
-  prose that references items. Its front matter has `title` and `summary` (one
-  sentence) and nothing else; a page has no scope and no level.
+- A page source (`pages-src/<name>.md`) is one Markdown file, written by hand,
+  without a header. Its title is its first heading, a top-level one, and its
+  summary is the paragraph that follows it; a source that does not start so
+  fails the check. Nothing else describes a page: it has no scope and no level.
+  After the summary come headings, connecting sentences, references in the
+  short form and, at each place where an item stands in full, the long form.
 - The long form is an HTML comment on a line of its own, `<!-- item: R0042 -->`.
   It sets the whole item in.
 - The finished page (`pages/<name>.md`) is written by a generator only: a first
-  line that names its source, the `title` as top-level heading, then the text
-  of the source with each short form resolved to a link and each long form
+  line that names its source, then the text of the source, title and summary
+  included, with each short form resolved to a link and each long form
   replaced by its item.
 - An item set in stands under a heading of its identifier and name, one level
   below the heading it stands under. It shows, in this order: its first text,
@@ -238,6 +238,9 @@ everywhere (the field is absent)   whatever a member of the organization works o
   and name as top-level heading, and the item as the long form shows it. The
   short form links to this page. Once the site exists, the permanent address of
   a rule shows the rule's own page.
+- The start page is `pages-src/index.md`, generated as `pages/index.md`. Every
+  reading page can be reached from it by links; a page that cannot fails the
+  check. The page of an item is reached through the references to it.
 - The pages are committed, so that they read as continuous text on GitHub.
 - The checks for Markdown (format, lint rules, links) run on the generated
   pages, where every reference is resolved, so a broken link in a rationale is
@@ -247,9 +250,10 @@ everywhere (the field is absent)   whatever a member of the organization works o
   page, so a person who reads the pages has read every rule in the wording the
   files hold.
 
-The folder [`pages/`](pages) is the index of the pages. The `README.md` in each
-folder describes the folder; it is neither an item nor a page, and the
-generator leaves it alone.
+The folder [`pages/`](pages) holds every page; reading starts at the start page.
+The `README.md` in each folder describes the folder; it is neither an item nor a
+page, and the generator leaves it alone. The one in `pages/` names the start
+page.
 
 ## Versions
 
@@ -453,10 +457,9 @@ meaning: |
 A page source, `pages-src/testing.md`, that embeds it:
 
 ```markdown
----
-title: Testing
-summary: How a change is tested and what the tests must cover.
----
+# Testing
+
+How a change is tested and what the tests must cover.
 
 Tests show that a change does what it claims. [R0042] says how much of the
 code they must reach.
@@ -470,6 +473,8 @@ The resulting page, `pages/testing.md`, written by the generator:
 <!-- Generated from pages-src/testing.md. Do not edit. -->
 
 # Testing
+
+How a change is tested and what the tests must cover.
 
 Tests show that a change does what it claims.
 [R0042 (coverage-gate)](items/R0042.md) says how much of the code they must

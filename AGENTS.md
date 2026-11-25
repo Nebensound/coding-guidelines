@@ -79,8 +79,7 @@ The rules below apply to every change, whoever makes it.
   is not above the current version, so the step is either taken or its `from`
   is moved.
 - An item is one YAML file, `<folder>/<identifier>.yaml`, and validates against
-  the schema of its kind; the front matter of a page source validates against
-  `page.json`. An editor with the YAML language server checks item files while
+  the schema of its kind; a page source has no header. An editor with the YAML language server checks item files while
   writing, through the mapping in `.vscode/settings.json`; the extension behind
   it is recommended in `.vscode/extensions.json`. A field every kind shares is
   changed in `item.json`, not in the schema of a kind. A value of
