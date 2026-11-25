@@ -144,10 +144,20 @@ and `replaced-by` when retired, and no scope fields. Besides:
   and `meaning`, what it means, as Markdown text. Both are required.
 - A principle has `statement`, the principle as one plain sentence in the same
   form as the statement of a rule, and optionally `explanation`, as for a rule.
-- A group has `rules`, a list of rule identifiers, and optionally `purpose`,
-  what the set of rules is for, as Markdown text. A group holds rules only:
-  which principles and definitions belong to it follows from its rules, so they
-  are not listed a second time.
+- A group has `rules`, a list of rule identifiers, `groups`, a list of
+  identifiers of other groups, or both: at least one of the two is set, and
+  neither lists an identifier twice. It optionally has `purpose`, what the set
+  of rules is for, as Markdown text.
+
+What a group means is its resolved set of rules: its own `rules` and the rules
+of every group it includes, through `groups` and the groups those include, each
+rule once. A group still holds rules only: an included group is a short way to
+name its rules, so a set that builds on another, such as a definition of done
+for one language on top of the general one, names the general rules once
+instead of repeating them. Which principles and definitions belong to a group
+follows from its rules, so they are not listed a second time. A group that
+includes itself, directly or through others, fails the check of this
+repository, and so does a group that includes one that does not exist.
 
 ## References
 
@@ -232,12 +242,16 @@ everywhere (the field is absent)   own and foreign together
   which is the `statement` of a rule or a principle, the `term` of a definition
   in bold with a colon followed by its `meaning`, or the `purpose` of a group;
   then every other field it sets, as a list in the order the fields sections of
-  this README name them, a value as code, a text as text and the `rules` of a
-  group in the short form; then its `explanation`, `rationale` and `examples`
-  under the headings `Explanation`, `Rationale` and `Examples`, one level lower.
+  this README name them, a value as code, a text as text and the `groups` and
+  `rules` of a group in the short form; then its `explanation`, `rationale` and
+  `examples` under the headings `Explanation`, `Rationale` and `Examples`, one
+  level lower.
 - Every item has a page of its own, `pages/items/<identifier>.md`, written by
-  the generator: a first line that names the file of the item, then the item as
-  the long form shows it, its identifier and name as the top-level heading. The
+  the generator: a first line that names the file of the item, then the item
+  with its identifier and name as the top-level heading. The page of a rule, a
+  definition or a principle shows the item as its long form sets it in. The
+  page of a group shows its `purpose`, the groups it includes as references
+  and, below them, its resolved set of rules, each rule in the short form. The
   short form links to this page. Once the site exists, the permanent address of
   a rule shows the rule's own page.
 - The start page is `pages-src/index.md`, generated as `pages/index.md`. Every
@@ -378,8 +392,8 @@ For a definition, a principle and a group, which bind nothing by themselves:
 | --------------------------------------------------------------------------------------- | ------------------------- |
 | A new item                                                                              | `added`                   |
 | `status` to `retired`                                                                   | `retired`                 |
-| Any other change of `status`; `name`, `reason` or `replaced-by`; the `rules` of a group | `editorial`               |
-| The `purpose` of a group; the `explanation` of a principle                              | `editorial`               |
+| Any other change of `status`; `name`, `reason` or `replaced-by`                         | `editorial`               |
+| The `rules`, the `groups` or the `purpose` of a group; the `explanation` of a principle | `editorial`               |
 | The `term` or the `meaning` of a definition; the `statement` of a principle             | the kind the title claims |
 
 - `level` rises from `permitted` to `recommended` to `required`; `existing`
