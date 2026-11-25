@@ -3,6 +3,12 @@
 The coding and repository guidelines of Nebensound. They are public so that
 public repositories can follow and cite them.
 
+<!-- TODO(#7): drop "still being filled" from the notice; #7 moves the last content. -->
+<!-- TODO(#12): drop the permanent address from the notice; #12 publishes the site that answers it. -->
+<!-- TODO(#11): drop the generator and its checks from the notice; #11 adds them. -->
+<!-- TODO(#8): drop the tagged versions from the notice; #8 calls the pipeline that gives them out. -->
+<!-- TODO(#8): drop the sentence on 0.1.0; #8 declares the repository's own types to the pipeline. -->
+
 > **Notice:** This repository is still being filled. The permanent address of a
 > rule, the generator of the reading pages and its checks, and the tagged
 > versions do not exist yet. Once versions are given out, the guidelines stay
@@ -25,12 +31,13 @@ decides what binds; no wording does.
 | ------------ | --------------------------------------------------------------------------- | -------------- | ------------------- |
 | Rule         | exactly one requirement that can be followed or violated                    | `R` and number | yes, by its `level` |
 | Definition   | exactly one term and its meaning                                            | `D` and number | no                  |
-| Principle    | an attitude rules follow from; not decidable for a single change            | `P` and number | no                  |
+| Principle    | what rules are built on; not decidable for a single change                  | `P` and number | no                  |
 | Group        | a named set of rules, for instance a definition of done                     | `G` and number | through its rules   |
 | Reading page | a text for people: headings, order and connecting sentences, rules embedded | its file name  | never               |
 
-- Only a rule binds. The text of a reading page explains and orders; it demands
-  nothing.
+- Principles are what rules are built on, rules use the terms that definitions
+  fix, and only a rule binds. The text of a reading page orders and connects
+  the items; it binds nothing.
 - Rule or principle: if two people looking at the same change agree whether it
   is met, it is a rule (checked by review where no program can check it); if
   they would not, it is a principle.
@@ -93,8 +100,9 @@ The file of a rule has these fields:
 - `level`: `required` (a deviation needs the deviation process: scope, reason,
   risk and migration target), `recommended` (a deviation needs a reason) or
   `permitted` (states that something is allowed).
-- `status`: `planned` (published and citable, binds nobody until a pull request
-  makes it `active`), `active` or `retired` (the file stays, with `reason`, and
+- `status`: `planned` (a new rule, published and citable, that binds nobody
+  until a pull request makes it `active`; see
+  [Announcing a step](#announcing-a-step)), `active` or `retired` (the file stays, with `reason`, and
   `replaced-by` where a rule took its place). No separate register of retired
   identifiers exists.
 - `addressee`: `change`, `repository` or `organization`.
@@ -110,17 +118,10 @@ The file of a rule has these fields:
   check as its owner calls it (lowercase words, hyphens, slashes). The schema
   fixes the form, not the names.
 - `principles`: optional list of the principles the rule follows from.
-- `next`: optional announcement of a stricter step, a table with `from` and at
-  least one of `level` and `existing`: what is to hold from that version on.
-  `from` names a version that can carry an incompatible change: `X.0.0`, or
-  `0.Y.0` below `1.0.0`. `next` announces the step and changes nothing by
-  itself. The pull request that brings the version named in `from` takes the
-  step: it rewrites `level` and `existing` to what `next` announced and removes
-  `next`, and the fields show it as `stricter`. The check of this repository
-  fails while a rule carries a `next` whose `from` is not above the current
-  version of the guidelines (the newest tag on `main`, `0.0.0` before the
-  first), so an announced step is either taken or its `from` is moved, never
-  silently passed.
+- `next`: optional announcement of a stricter step on a rule that binds
+  already: a table with `from`, the version of the step, and at least one of
+  `level` and `existing`, what is to hold from that version on. See
+  [Announcing a step](#announcing-a-step).
 - `explanation`: optional longer text on how to read and apply the statement,
   as Markdown text. What binds stays the `statement` with `applies-when` and
   `except`; the explanation cannot widen it, and a change of it is editorial.
@@ -277,22 +278,68 @@ incompatible.
 - Below `1.0.0`: below `0.1.0` every change raises the patch version; from
   `0.1.0` an incompatible change raises the minor version and every other change
   the patch version. `1.0.0` is a deliberate step.
-- Announcement before obligation, from `1.0.0` on: an incompatible step is
-  announced in an earlier version and binds from the major version that switches
-  it on. A rule with `status: planned` binds nobody until a pull request makes
-  it `active`. When it binds what exists, that pull request is `stricter` and
-  the rule binds from the major version it brings; otherwise it is `added`. The
-  `from` of `next` names the major version of the stricter step, and the pull
-  request that brings that version takes the step and is `stricter`. An
-  announcement asks nothing of anyone yet, so every announcement raises only the
-  patch version, whatever it announces. The pull request that fulfils it carries
-  the weight: `added` (minor) or `stricter` (major). Relaxing and retiring need
-  no announcement.
-- Below `1.0.0` nothing has to be announced: an incompatible step binds from the
-  version that carries it. `status: planned` and `next` stay available below
-  `1.0.0` for whoever wants to announce a step, but nothing requires them.
+- From `1.0.0` on, an incompatible step is announced before it binds, as
+  described in [Announcing a step](#announcing-a-step).
 - A retired rule keeps its file and its identifier is never given again, so a
   citation never points at nothing.
+
+### Announcing a step
+
+Three words announce a step, and each means one thing:
+
+- `status: planned` stands on a whole new rule. The rule is published and
+  citable but binds nobody yet; the pull request that makes it `active` is the
+  step.
+- `next` stands on a rule that binds already and announces a stricter step for
+  it: a raised `level`, a raised `existing`, or both.
+- `from` is the field of `next` that names the version of that step. It is a
+  version that can carry an incompatible change: `X.0.0`, or `0.Y.0` below
+  `1.0.0`.
+
+A planned rule, the other fields left out. The pull request that makes it
+`active` is `added`, because with `existing: exempt` it does not bind what
+exists:
+
+```yaml
+name: signed-commits
+statement: A commit on `main` is signed.
+status: planned
+level: required
+existing: exempt
+```
+
+A rule that binds already, with a stricter step announced for `2.0.0`, the
+other fields left out. Until then it is `recommended`; the pull request that
+brings `2.0.0` rewrites `level` to `required` and removes `next`:
+
+```yaml
+name: public-api-documented
+status: active
+level: recommended
+existing: on-touch
+next:
+  from: 2.0.0
+  level: required
+```
+
+- From `1.0.0` on, an incompatible step is announced in an earlier version and
+  binds from the major version that switches it on: a planned rule that binds
+  what exists from the major version whose pull request makes it `active`, the
+  step of `next` from the version its `from` names.
+- `next` changes nothing by itself. The pull request that brings the version
+  named in `from` takes the step: it rewrites `level` and `existing` to what
+  `next` announced and removes `next`, and the fields show it as `stricter`.
+  The check of this repository fails while a rule carries a `next` whose `from`
+  is not above the current version of the guidelines (the newest tag on
+  `main`, `0.0.0` before the first), so an announced step is either taken or
+  its `from` is moved, never silently passed.
+- An announcement asks nothing of anyone yet, so every announcement raises only
+  the patch version, whatever it announces. The pull request that fulfils it
+  carries the weight: `added` (minor) or `stricter` (major).
+- Below `1.0.0` nothing has to be announced: an incompatible step binds from the
+  version that carries it. `status: planned` and `next` stay available for
+  whoever wants to announce a step, but nothing requires them.
+- Relaxing and retiring need no announcement.
 
 ### What a change does to an item
 
@@ -434,7 +481,7 @@ level: required
 addressee: change
 existing: on-touch
 enforced-by:
-  - coverage-gate
+  - pipeline
 explanation: |
   A line counts as covered when at least one test runs it. How coverage is
   measured is left to the tools of each language.
@@ -489,7 +536,7 @@ A change covers every line of code it adds or changes with a
 - `status`: `active`
 - `addressee`: `change`
 - `existing`: `on-touch`
-- `enforced-by`: `coverage-gate`
+- `enforced-by`: `pipeline`
 
 ### Explanation
 

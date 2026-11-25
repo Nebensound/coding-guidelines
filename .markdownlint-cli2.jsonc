@@ -2,8 +2,9 @@
   "config": {
     "default": true,
     "MD013": false,
-    // No inline HTML is needed anywhere. HTML comments, which carry the
-    // references in page sources, are not elements and stay allowed.
+    // Inline HTML is refused: nothing in the repository needs it today. HTML
+    // comments are not elements and stay allowed; they carry the long form of
+    // a reference in page sources and the markers in the README.
     "MD033": true,
   },
   // Page sources are checked through the pages generated from them, where
