@@ -4,6 +4,9 @@ This repository holds the Nebensound Coding Guidelines. This file has two
 parts: how to work with the guidelines, and how to change them. The model of the
 content is described in [`README.md`](README.md).
 
+The guidelines hold for this repository itself: a change here meets the rules
+in force like a change in any other repository.
+
 ## Working with the guidelines
 
 ### Find what applies
@@ -11,10 +14,9 @@ content is described in [`README.md`](README.md).
 - Read the rules whose `languages` and `repositories` fit the case, as described
   in [Fields of a rule](README.md#fields-of-a-rule). An absent field fits every
   value; within a field one value must fit, between fields all must.
-- A rule without `repositories` holds wherever a member of the organization
-  works, someone else's project included. How the named places nest, and what
-  changes in a sandbox or under a personal account, is described in
-  [Where a rule holds](README.md#where-a-rule-holds).
+- A rule without `repositories` holds in own repositories and in someone
+  else's project alike. How the named places nest, and what changes in a
+  sandbox, is described in [Where a rule holds](README.md#where-a-rule-holds).
 - Only a rule binds, by its `level`. Definitions, principles and the text of
   reading pages explain and demand nothing.
 - The reading pages in [`pages/`](pages) show the rules in context.
@@ -40,8 +42,8 @@ The rules below apply to every change, whoever makes it.
   property it secures. A rationale that only says "best practice" is not one.
   Keep rules decidable; if two people would not agree whether a change meets
   it, it is a principle, not a rule.
-- An identifier is never reused, renamed or removed once a tagged version
-  contains it. A retired item stays as a file with `reason` and, where an item
+- An identifier is never reused, renamed or removed once the first full
+  version on `main` contains it. A retired item stays as a file with `reason` and, where an item
   of the same kind took its place, `replaced-by`.
 - A new rule gets a place on a reading page in the same change.
 - What a change does to an item (`stricter`, `added`, `relaxed`, `retired`,

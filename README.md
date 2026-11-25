@@ -68,9 +68,12 @@ decides what binds; no wording does.
   position or topic.
 - Numbers have four digits and are counted separately per letter (`R0001`,
   `D0001`). A fifth digit follows after `9999`.
-- An identifier is taken from the first tagged version that contains it. Before
-  that it may still be renumbered or dropped without a trace. Afterwards it is
-  never reused, renamed or removed.
+- An identifier is taken by the first full version on `main` that contains it:
+  a version without a pre-release part, such as `1.4.0`. A tag on a branch in
+  front of `main` (see
+  [Through a branch in front of `main`](#through-a-branch-in-front-of-main))
+  takes nothing. Until an identifier is taken it may still be renumbered or
+  dropped without a trace; afterwards it is never reused, renamed or removed.
 - Every item also has a speaking `name`: lowercase words joined by hyphens. It
   may change. A citation reads `R0042 (coverage-gate)`; only the number counts.
 - From outside, a rule is cited by the permanent address
@@ -174,14 +177,14 @@ code block the same characters are text, not a reference.
 
 ## Where a rule holds
 
-Rules hold in layers, and the lowest layer binds wherever a member of the
-organization works, also in someone else's project. The field `repositories`
+Rules hold in layers, and the lowest layer binds in the organization's own
+repositories and in someone else's project alike. The field `repositories`
 therefore names a place in a tree:
 
 ```text
-everywhere (the field is absent)   whatever a member of the organization works on
+everywhere (the field is absent)   own and foreign together
 ├── foreign                        someone else's project: a fork, a pull request upstream
-└── own                            the organization's repositories and a member's own repositories under a personal account
+└── own                            the organization's own repositories
     ├── public                     its open source
     └── internal                   private
         └── customer               a customer can see it
@@ -193,8 +196,8 @@ everywhere (the field is absent)   whatever a member of the organization works o
 - `public`, `internal` and `customer` are what an own repository declares as its
   audience. `foreign` is declared nowhere: it follows from the project being
   someone else's. A fork of someone else's project stays foreign wherever it
-  lives, in the organization or under a member's personal account; it becomes
-  an own repository when it carries the organization's repository declaration.
+  lives; it becomes an own repository when it carries the organization's
+  repository declaration.
 - The `addressee` decides what can hold in someone else's project at all. A rule
   addressed to the `change` can. A rule addressed to the `repository` or the
   `organization` cannot, so it names `own` or a node below it, and the schema
@@ -205,9 +208,6 @@ everywhere (the field is absent)   whatever a member of the organization works o
   whatever its `level`. A rule without the field keeps its level everywhere, a
   sandbox included. Whether a repository is a sandbox is given by the
   organization's repository property `lifecycle`.
-- A member's own repository under a personal account is an own repository,
-  `public` or `internal` by its visibility. Every rule holds for it except the
-  rules addressed to the `organization`.
 - What a repository produces (a library, a service, firmware, a document) is
   stated as text in `applies-when`.
 

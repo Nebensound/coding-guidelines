@@ -76,7 +76,7 @@
       "items": false
     },
     "repositories": {
-      "description": "A node of the tree: foreign and own below everywhere, public and internal below own, customer below internal. The rule holds from the node it names downwards. Absent means everywhere a member of the organization works, someone else's project included. Within the field one value must fit; between the fields all must fit.",
+      "description": "A node of the tree: foreign and own below everywhere, public and internal below own, customer below internal. The rule holds from the node it names downwards. Absent means everywhere: own repositories and someone else's project alike. Within the field one value must fit; between the fields all must fit.",
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
