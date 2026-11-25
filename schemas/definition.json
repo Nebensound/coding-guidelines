@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nebensound.github.io/coding-guidelines/schemas/definition.json",
+  "title": "A definition",
+  "description": "A definition (definitions/D<number>.yaml). The identifier is the file name without its ending. The fields every item shares come from item.json; a definition has no scope fields.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "item.json"
+    }
+  ],
+  "required": ["term", "meaning"],
+  "properties": {
+    "term": {
+      "description": "The word or phrase as it is written, on one line.",
+      "type": "string",
+      "pattern": "^\\S(?:[^\\n]*\\S)?(?![\\s\\S])"
+    },
+    "meaning": {
+      "description": "What the term means, as Markdown text without headings.",
+      "type": "string",
+      "minLength": 1
+    },
+    "replaced-by": {
+      "$ref": "item.json#/$defs/definition-id"
+    }
+  },
+  "unevaluatedProperties": false
+}

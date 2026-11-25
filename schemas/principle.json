@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nebensound.github.io/coding-guidelines/schemas/principle.json",
+  "title": "A principle",
+  "description": "A principle (principles/P<number>.yaml). The identifier is the file name without its ending. The fields every item shares come from item.json; a principle has no scope fields.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "item.json"
+    }
+  ],
+  "required": ["statement"],
+  "properties": {
+    "statement": {
+      "description": "The principle as one plain sentence on one line.",
+      "$ref": "item.json#/$defs/statement"
+    },
+    "explanation": {
+      "$ref": "item.json#/$defs/explanation"
+    },
+    "replaced-by": {
+      "$ref": "item.json#/$defs/principle-id"
+    }
+  },
+  "unevaluatedProperties": false
+}

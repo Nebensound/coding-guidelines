@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nebensound.github.io/coding-guidelines/schemas/item.json",
+  "title": "An item",
+  "description": "What every kind of item shares: name, status, reason and replaced-by, the condition on a retired item, and the patterns of the identifiers; and the statement and the explanation, which a rule and a principle share. The schema of each kind references this file and adds only what is its own; no item file is checked against this file alone.",
+  "type": "object",
+  "required": ["name", "status"],
+  "properties": {
+    "name": {
+      "description": "A speaking name: lowercase words joined by hyphens. It may change; only the identifier counts.",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*(?![\\s\\S])"
+    },
+    "status": {
+      "description": "planned: published and citable, binds nobody until a pull request makes it active. active: in force. retired: the file stays.",
+      "enum": ["planned", "active", "retired"]
+    },
+    "reason": {
+      "description": "Why the item was retired.",
+      "type": "string",
+      "minLength": 1
+    },
+    "replaced-by": {
+      "description": "The item of the same kind that took the place of a retired item. The schema of the kind fixes its pattern.",
+      "type": "string"
+    }
+  },
+  "if": {
+    "properties": {
+      "status": {
+        "const": "retired"
+      }
+    },
+    "required": ["status"]
+  },
+  "then": {
+    "properties": {
+      "reason": true
+    },
+    "required": ["reason"]
+  },
+  "else": {
+    "properties": {
+      "reason": false,
+      "replaced-by": false
+    }
+  },
+  "$defs": {
+    "rule-id": {
+      "description": "The identifier of a rule: R and four digits from 0001, a fifth digit only after 9999.",
+      "type": "string",
+      "pattern": "^R(?:[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3,})(?![\\s\\S])"
+    },
+    "definition-id": {
+      "description": "The identifier of a definition: D and four digits from 0001, a fifth digit only after 9999.",
+      "type": "string",
+      "pattern": "^D(?:[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3,})(?![\\s\\S])"
+    },
+    "principle-id": {
+      "description": "The identifier of a principle: P and four digits from 0001, a fifth digit only after 9999.",
+      "type": "string",
+      "pattern": "^P(?:[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3,})(?![\\s\\S])"
+    },
+    "group-id": {
+      "description": "The identifier of a group: G and four digits from 0001, a fifth digit only after 9999.",
+      "type": "string",
+      "pattern": "^G(?:[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3,})(?![\\s\\S])"
+    },
+    "statement": {
+      "description": "One plain sentence on one line, ending with a full stop. Reasons and examples never stand in it. It carries no Markdown but code spans and references in the short form, [some words][D0003] or [R0042]: a square bracket outside a code span stands only in such a reference.",
+      "type": "string",
+      "pattern": "^(?=\\S)(?:[^\\n\\[\\]`]|`[^`\\n]+`|\\[[^\\n\\[\\]]+\\]\\[[RDPG](?:[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3,})\\]|\\[[RDPG](?:[0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]|[0-9][1-9][0-9]{2}|[1-9][0-9]{3,})\\])*\\.(?![\\s\\S])"
+    },
+    "explanation": {
+      "description": "How to read and apply the statement, as Markdown text without headings. It cannot widen what binds; its change is editorial.",
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

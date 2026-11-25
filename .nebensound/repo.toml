@@ -1,0 +1,11 @@
+#:schema https://raw.githubusercontent.com/Nebensound/pipeline/main/schemas/nebensound-declaration.json
+
+# The declaration of this repository for the central pipeline: what it consists
+# of, for whom it is meant and what the pipeline does with it. The repository
+# does not call the pipeline yet, so no run reads this file so far.
+# "public": the guidelines are open source. "none" applies no preset: nothing
+# here is built or published.
+
+[repo]
+audience = "public"
+pipeline = "none"

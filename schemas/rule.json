@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nebensound.github.io/coding-guidelines/schemas/rule.json",
+  "title": "A rule",
+  "description": "A rule (rules/R<number>.yaml). The identifier is the file name without its ending. The fields every item shares come from item.json. The value lists of languages and repositories are empty for now: items is false until the pull request that brings the first item needing a value adds it as an enum.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "item.json"
+    },
+    {
+      "description": "A retired rule announces nothing.",
+      "if": {
+        "properties": {
+          "status": {
+            "const": "retired"
+          }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "next": false
+        }
+      }
+    },
+    {
+      "description": "A rule addressed to the repository or the organization cannot hold in someone else's project, so it names own or a node below it.",
+      "if": {
+        "properties": {
+          "addressee": {
+            "enum": ["repository", "organization"]
+          }
+        },
+        "required": ["addressee"]
+      },
+      "then": {
+        "properties": {
+          "repositories": {
+            "type": "array",
+            "items": {
+              "not": {
+                "const": "foreign"
+              }
+            }
+          }
+        },
+        "required": ["repositories"]
+      }
+    }
+  ],
+  "required": [
+    "statement",
+    "level",
+    "addressee",
+    "existing",
+    "enforced-by",
+    "rationale"
+  ],
+  "properties": {
+    "statement": {
+      "description": "The rule as one plain sentence on one line. Reasons and examples never stand in it.",
+      "$ref": "item.json#/$defs/statement"
+    },
+    "level": {
+      "$ref": "#/$defs/level"
+    },
+    "addressee": {
+      "enum": ["change", "repository", "organization"]
+    },
+    "languages": {
+      "description": "Absent means every language. Within the field one value must fit.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": false
+    },
+    "repositories": {
+      "description": "A node of the tree: foreign and own below everywhere, public and internal below own, customer below internal. The rule holds from the node it names downwards. Absent means everywhere: own repositories and someone else's project alike. Within the field one value must fit; between the fields all must fit.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": false
+    },
+    "applies-when": {
+      "description": "A condition under which the rule applies.",
+      "type": "string",
+      "minLength": 1
+    },
+    "except": {
+      "description": "An exception to the rule.",
+      "type": "string",
+      "minLength": 1
+    },
+    "existing": {
+      "$ref": "#/$defs/existing"
+    },
+    "enforced-by": {
+      "description": "review, or the names of the automated checks as their owner calls them (lowercase words, hyphens, slashes).",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(?:review|[a-z0-9]+(?:[-/][a-z0-9]+)*)(?![\\s\\S])"
+      }
+    },
+    "principles": {
+      "description": "The principles the rule is built on.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "item.json#/$defs/principle-id"
+      }
+    },
+    "next": {
+      "description": "Announcement of a stricter step: what is to hold from a named version on. It changes nothing by itself: the pull request that brings the version named in from takes the step, rewrites level and existing to what next announced and removes next, which the fields show as stricter. The check fails while a rule carries a next whose from is not above the current version.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from"],
+      "anyOf": [
+        {
+          "properties": {
+            "level": true
+          },
+          "required": ["level"]
+        },
+        {
+          "properties": {
+            "existing": true
+          },
+          "required": ["existing"]
+        }
+      ],
+      "properties": {
+        "from": {
+          "description": "A version that can carry an incompatible change: X.0.0, or 0.Y.0 below 1.0.0.",
+          "type": "string",
+          "pattern": "^(?:[1-9][0-9]*\\.0\\.0|0\\.[1-9][0-9]*\\.0)(?![\\s\\S])"
+        },
+        "level": {
+          "$ref": "#/$defs/level"
+        },
+        "existing": {
+          "$ref": "#/$defs/existing"
+        }
+      }
+    },
+    "explanation": {
+      "$ref": "item.json#/$defs/explanation"
+    },
+    "rationale": {
+      "description": "The failure the rule prevents or the property it secures, as Markdown text without headings.",
+      "type": "string",
+      "minLength": 1
+    },
+    "examples": {
+      "description": "Examples of meeting and violating the rule, as Markdown text without headings; code blocks included.",
+      "type": "string",
+      "minLength": 1
+    },
+    "replaced-by": {
+      "$ref": "item.json#/$defs/rule-id"
+    }
+  },
+  "unevaluatedProperties": false,
+  "$defs": {
+    "level": {
+      "description": "required: a deviation needs the deviation process. recommended: a deviation needs a reason. permitted: states that something is allowed.",
+      "enum": ["required", "recommended", "permitted"]
+    },
+    "existing": {
+      "description": "What holds for what was there before the rule. exempt: nothing. on-touch: brought in line when touched anyway. required: brought in line.",
+      "enum": ["exempt", "on-touch", "required"]
+    }
+  }
+}

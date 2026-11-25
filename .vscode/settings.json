@@ -1,0 +1,8 @@
+{
+  "yaml.schemas": {
+    "./schemas/rule.json": "rules/*.yaml",
+    "./schemas/definition.json": "definitions/*.yaml",
+    "./schemas/principle.json": "principles/*.yaml",
+    "./schemas/group.json": "groups/*.yaml"
+  }
+}
