@@ -7,8 +7,17 @@
     // a reference in page sources and the markers in the README.
     "MD033": true,
   },
-  // Page sources are checked through the pages generated from them, where
-  // every reference by identifier is resolved. In a source, such a reference
-  // is a link label without a definition.
-  "ignores": ["node_modules/**", "pages-src/**"],
+  // A page source refers to an item by its identifier, `[R0042]` or
+  // `[some words][D0003]`. The generator resolves such a reference; in the
+  // source it is a link label without a definition. So only the rule on
+  // undefined reference labels (MD052) is off, and only for page sources;
+  // every other rule reads them as it reads any other Markdown file.
+  "overrides": [
+    {
+      "filter": ["pages-src/**"],
+      "config": { "MD052": false },
+      "combine": "merge",
+    },
+  ],
+  "ignores": ["node_modules/**"],
 }

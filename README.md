@@ -246,8 +246,10 @@ everywhere (the field is absent)   own and foreign together
 - The pages are committed, so that they read as continuous text on GitHub.
 - The checks for Markdown (format, lint rules, links) run on the generated
   pages, where every reference is resolved, so a broken link in a rationale is
-  found there, and the finding names the page. markdownlint leaves `pages-src/`
-  out: there, a short form is a link label without a definition.
+  found there, and the finding names the page. markdownlint also reads the page
+  sources, with one rule switched off for `pages-src/` only: the one on
+  undefined reference labels (MD052), because there a short form is a link
+  label without a definition until the generator resolves it.
 - Every active rule stands in full, by the long form, on at least one reading
   page, so a person who reads the pages has read every rule in the wording the
   files hold.
